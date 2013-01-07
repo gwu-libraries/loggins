@@ -1,17 +1,17 @@
 from django.conf.urls import patterns, include, url
+from django.contrib import admin
 
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+from tastypie.api import Api
+
+from ui.api import RecordResource
+
+admin.autodiscover()
+
+api_1 = Api(api_name='1')
+api_1.register(RecordResource())
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'loggins.views.home', name='home'),
-    # url(r'^loggins/', include('loggins.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', 'ui.views.home', name='home'),
+    url(r'^api/', include(api_1.urls)), 
+    url(r'^admin/', include(admin.site.urls)),
 )

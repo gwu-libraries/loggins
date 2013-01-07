@@ -38,3 +38,4 @@ nosetests.xml
 local_settings.py
 ENV
 *.swp
+logginsdev
