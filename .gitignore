@@ -37,3 +37,4 @@ nosetests.xml
 # local
 local_settings.py
 ENV
+*.swp

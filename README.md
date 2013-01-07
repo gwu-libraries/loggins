@@ -13,3 +13,17 @@ installation
 these instructions are optimized for running on a newly installed
 Ubuntu 10.04 LTS host.
 
+[add ubuntu stuff for db, web server, etc.]
+
+create and activate a virtualenv:
+
+```
+% virtualenv --no-site-packages ENV
+% source ENV/bin/activate
+```
+
+install dependencies:
+
+```
+% pip install -r requirements.txt
+```
