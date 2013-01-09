@@ -36,7 +36,9 @@ nosetests.xml
 
 # local
 local_settings.py
+wsgi.py
 ENV
 *.swp
 logginsdev
 distribute-0.6.10.tar.gz
+static
