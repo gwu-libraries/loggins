@@ -36,6 +36,7 @@ nosetests.xml
 
 # local
 local_settings.py
+wsgi.py
 ENV
 *.swp
 logginsdev
