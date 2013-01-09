@@ -41,3 +41,4 @@ ENV
 *.swp
 logginsdev
 distribute-0.6.10.tar.gz
+static

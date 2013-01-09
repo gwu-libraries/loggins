@@ -1,0 +1,37 @@
+<VirtualHost *:80>
+    ServerAdmin YOUR.WEBMASTER@example.com
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    LogLevel warn
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+    Alias /static/ /PATH/TO/loggins/static/
+    <Directory /PATH/TO/loggins/static>
+        Order deny,allow
+        Allow from all
+    </Directory>
+
+    Alias /media/ /PATH/TO/loggins/media/
+    <Directory /PATH/TO/loggins/media>
+        Order deny,allow
+        Allow from all
+    </Directory>
+
+    # For WSGI daemon mode:
+    #   see http://code.google.com/p/modwsgi/wiki/QuickConfigurationGuide
+    WSGIDaemonProcess YOUR.HOSTNAME.HERE processes=2 threads=15 python-path=/PATH/TO/YOUR/VENV/lib/python/2.X/site-packages:/PATH/TO/loggins/loggins
+    WSGIProcessGroup YOUR.HOSTNAME.HERE
+
+    # For WSGI embedded mode:
+    #WSGIPythonPath /PATH/TO/loggins
+    # If using a virtualenv, uncomment and tweak next line (inc. python version):
+    # WSGIPythonPath /PATH/TO/YOUR/VENV/lib/python/2.X/site-packages
+
+    WSGIScriptAlias / /PATH/TO/loggins/loggins/wsgi.py
+
+    <Directory /PATH/TO/loggins/ui>
+        <Files wsgi.py>
+            Order deny,allow
+            Allow from all
+        </Files>
+    </Directory>
+</VirtualHost>
