@@ -28,6 +28,9 @@
 
     WSGIScriptAlias / /PATH/TO/loggins/loggins/wsgi.py
 
+    # required for tastypie/wsgi/apache integration
+    WSGIPassAuthorization On
+
     <Directory /PATH/TO/loggins/ui>
         <Files wsgi.py>
             Order deny,allow
