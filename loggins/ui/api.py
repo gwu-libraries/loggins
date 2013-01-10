@@ -1,5 +1,5 @@
 from tastypie.authentication import ApiKeyAuthentication
-from tastypie.authorization import Authorization
+from tastypie.authorization import DjangoAuthorization
 from tastypie.resources import ModelResource, ALL
 
 from ui.models import Record
@@ -10,7 +10,7 @@ class RecordResource(ModelResource):
         queryset = Record.objects.all()
         resource_name = 'record'
         authentication = ApiKeyAuthentication()
-        authorization = Authorization()
+        authorization = DjangoAuthorization()
         filtering = {
                 'hostname': ALL,
                 'event': ALL,
