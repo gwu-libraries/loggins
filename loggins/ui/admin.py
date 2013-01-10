@@ -1,6 +1,21 @@
+from tastypie.admin import ApiKeyInline
+from tastypie.models import ApiAccess, ApiKey
+
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 
 from ui import models
+
+
+admin.site.register(ApiKey)
+admin.site.register(ApiAccess)
+
+
+class UserModelAdmin(UserAdmin):
+    inlines = UserAdmin.inlines + [ApiKeyInline]
+admin.site.unregister(User)
+admin.site.register(User, UserModelAdmin)
 
 
 class HostAdmin(admin.ModelAdmin):
