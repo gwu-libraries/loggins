@@ -1,8 +1,19 @@
+# SSL: options highlighted and commented out, uncomment/replace to enable
 <VirtualHost *:80>
-    ServerAdmin YOUR.WEBMASTER@example.com
+# SSL: 
+# <VirtualHost *:443>
+    ServerAdmin YOUR.WEBMASTER@EXAMPLE.COM
+    ServerName *:80
+    # SSL:
+    # ServerName *:443
     ErrorLog ${APACHE_LOG_DIR}/error.log
     LogLevel warn
     CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+    # SSL:
+    # SSLEngine on
+    # SSLCertificateFile /etc/apache2/ssl/apache.crt
+    # SSLCertificateKeyFile /etc/apache2/ssl/apache.key
 
     Alias /static/ /PATH/TO/loggins/static/
     <Directory /PATH/TO/loggins/static>

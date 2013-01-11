@@ -100,14 +100,16 @@ $ links http://127.0.0.1:8000/
 if it's working, you're good to go!
 
 to install into apache, copy and install your apache config into 
-apache's sites, then edit it to use proper paths and hostname info:
+apache's sites, then edit it to use proper paths and hostname info,
+optionally enabling SSL (cert/key handling follows standard approach
+see http://httpd.apache.org/docs/2.2/ssl/ for details):
 ```
 $ sudo cp loggins/apache.conf.template /etc/apache2/sites-available/loggins_beta_001
 [EDIT EDIT EDIT]
 ```
 
-[optionally disable the default site, then] enable the site, then reload 
-apache:
+[optionally disable the default site, then] enable the loggins site, 
+then reload apache:
 ```
 $ sudo a2dissite default
 $ sudo a2ensite loggins
@@ -118,3 +120,12 @@ you should be up and running. to test it out, use curl:
 ```
 $ curl -i -H "Content-Type: application/json" -H "Accept: application/json" -u YOURUSERNAME:YOURPASSWORD  -X POST -d '{"event":"i","hostname":"test1"}' http://YOUR.SERVER.NAME:PORT/api/1/record/
 ```
+
+to create user/accounts/api keys, go to the django admin site at 
+```/admin```, and under ```Users``` create new users as needed. new
+api keys are generated when you create new accounts.  the generated
+api key for each user is listed at the bottom of their account page
+in the admin ui.
+
+to update existing api keys, go to the django admin page for the user
+account in question and update the api key value at the bottom.
