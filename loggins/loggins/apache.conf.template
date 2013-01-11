@@ -15,14 +15,14 @@
     # SSLCertificateFile /etc/apache2/ssl/apache.crt
     # SSLCertificateKeyFile /etc/apache2/ssl/apache.key
 
-    Alias /static/ /PATH/TO/loggins/static/
-    <Directory /PATH/TO/loggins/static>
+    Alias /static/ /PATH/TO/loggins/loggins/static/
+    <Directory /PATH/TO/loggins/loggins/static>
         Order deny,allow
         Allow from all
     </Directory>
 
-    Alias /media/ /PATH/TO/loggins/media/
-    <Directory /PATH/TO/loggins/media>
+    Alias /media/ /PATH/TO/loggins/loggins/media/
+    <Directory /PATH/TO/loggins/loggins/media>
         Order deny,allow
         Allow from all
     </Directory>
@@ -37,12 +37,12 @@
     # If using a virtualenv, uncomment and tweak next line (inc. python version):
     # WSGIPythonPath /PATH/TO/YOUR/VENV/lib/python/2.X/site-packages
 
-    WSGIScriptAlias / /PATH/TO/loggins/loggins/wsgi.py
+    WSGIScriptAlias / /PATH/TO/loggins/loggins/loggins/wsgi.py
 
     # required for tastypie/wsgi/apache integration
     WSGIPassAuthorization On
 
-    <Directory /PATH/TO/loggins/ui>
+    <Directory /PATH/TO/loggins/loggins/ui>
         <Files wsgi.py>
             Order deny,allow
             Allow from all

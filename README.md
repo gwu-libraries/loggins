@@ -46,6 +46,15 @@ $ mkdir -p /loggins/tag_foo
 $ cd /loggins/tag_foo
 ```
 
+get the code for this application, loggins, from github, then check
+out the tag to deploy:
+
+```
+$ git clone https://github.com/gwu-libraries/loggins.git
+$ cd loggins
+$ git checkout tag_foo
+```
+
 create and activate a virtualenv:
 
 ```
@@ -63,7 +72,7 @@ $ pip install -r requirements.txt
 copy over the local settings template to a real local settings file,
 then add in correct ADMINS and DATABASE info.
 ```
-$ cd /loggins/tag_foo/loggins
+$ cd loggins
 $ cp loggins/local_settings.py.template loggins/local_settings.py
 [edit edit edit]
 ```
