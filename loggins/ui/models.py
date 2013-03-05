@@ -10,6 +10,7 @@ models.signals.post_save.connect(create_api_key, sender=User)
 class Host(models.Model):
     name = models.CharField(max_length=50, unique=True)
     is_active = models.BooleanField(default=True, db_index=True)
+    location = models.CharField(max_length=5, default='', db_index=True)
 
     def __unicode__(self):
         return '%s' % self.name
