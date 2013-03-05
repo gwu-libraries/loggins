@@ -2,3 +2,4 @@ django
 django-tastypie
 psycopg2
 pytz
+south
