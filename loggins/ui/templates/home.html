@@ -1,57 +1,55 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>records</title>
-    </head>
-    <body>
-        <h1>records</h1>
-        {% if state %}
-        <h2>current state</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>id</th>
-                    <th>timestamp</th>
-                    <th>host</th>
-                    <th>location</th>
-                    <th>event</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for record in state %}
-                <tr>
-                    <td>{{ record.id }}</td>
-                    <td>{{ record.timestamp|date:"Y-m-d H:i:s" }}</td>
-                    <td>{{ record.host.name }}</td>
-                    <td>{{ record.host.location }}</td>
-                    <td>{{ record.get_event_display }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% endif %}
-        {% if records %}
-        <h2>recent events</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>id</th>
-                    <th>timestamp</th>
-                    <th>host</th>
-                    <th>event</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for record in records %}
-                <tr>
-                    <td>{{ record.id }}</td>
-                    <td>{{ record.timestamp|date:"Y-m-d H:i:s" }}</td>
-                    <td>{{ record.host.name }}</td>
-                    <td>{{ record.get_event_display }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% endif %}
-    </body>
-</html>
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block content %}
+<h1>records</h1>
+{% if state %}
+<h2>current state</h2>
+<table>
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>timestamp</th>
+            <th>host</th>
+            <th>location</th>
+            <th>event</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in state %}
+        <tr>
+            <td>{{ record.id }}</td>
+            <td>{{ record.timestamp|date:"Y-m-d H:i:s" }}</td>
+            <td><a href='{% url "host" record.host_id %}'>{{ record.host.name }}</a></td>
+            <td>{{ record.host.location }}</td>
+            <td>{{ record.get_event_display }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% if records %}
+<h2>recent events</h2>
+<table>
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>timestamp</th>
+            <th>host</th>
+            <th>event</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in records %}
+        <tr>
+            <td>{{ record.id }}</td>
+            <td>{{ record.timestamp|date:"Y-m-d H:i:s" }}</td>
+            <td>{{ record.host.name }}</td>
+            <td>{{ record.get_event_display }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% endblock content %}

@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
-from ui.models import Record
+from ui.models import Host, Record
 
 
 def _paginate(request, paginator):
@@ -26,13 +26,27 @@ def home(request):
             SELECT MAX(timestamp)
             FROM ui_record
             WHERE host_id=r1.host_id
+            AND location != ''
         )
         AND ui_host.id = r1.host_id
         AND ui_host.is_active IS true
-        ORDER BY ui_host.name''')
+        ORDER BY location''')
 
     return render(request, 'home.html', {
         'title': 'home',
         'records': records,
         'state': state,
+    })
+
+
+def host(request, host_id):
+    host = get_object_or_404(Host, pk=host_id)
+    paginator = Paginator(host.records.order_by('-timestamp'), 25)
+    page, records = _paginate(request, paginator)
+    return render(request, 'host.html', {
+        'title': 'host: %s (%s)' % (host.id, host.location),
+        'host': host,
+        'records': records,
+        'paginator': paginator,
+        'page': page,
     })
