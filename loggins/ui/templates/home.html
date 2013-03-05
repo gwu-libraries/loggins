@@ -13,6 +13,7 @@
                     <th>id</th>
                     <th>timestamp</th>
                     <th>host</th>
+                    <th>location</th>
                     <th>event</th>
                 </tr>
             </thead>
@@ -20,8 +21,9 @@
                 {% for record in state %}
                 <tr>
                     <td>{{ record.id }}</td>
-                    <td>{{ record.timestamp|date:"Y-m-d h:i:s" }}</td>
+                    <td>{{ record.timestamp|date:"Y-m-d H:i:s" }}</td>
                     <td>{{ record.host.name }}</td>
+                    <td>{{ record.host.location }}</td>
                     <td>{{ record.get_event_display }}</td>
                 </tr>
                 {% endfor %}
@@ -43,7 +45,7 @@
                 {% for record in records %}
                 <tr>
                     <td>{{ record.id }}</td>
-                    <td>{{ record.timestamp|date:"Y-m-d h:i:s" }}</td>
+                    <td>{{ record.timestamp|date:"Y-m-d H:i:s" }}</td>
                     <td>{{ record.host.name }}</td>
                     <td>{{ record.get_event_display }}</td>
                 </tr>
