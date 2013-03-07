@@ -1,52 +1,23 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load humanize %}
 
 {% block content %}
 <div class='span12'>
-<h1>records</h1>
-{% if state %}
-<h2>current state</h2>
+{% if floors %}
+<h1>current status</h1>
 <table class='table'>
     <thead>
         <tr>
-            <th>id</th>
-            <th>timestamp</th>
-            <th>host</th>
             <th>location</th>
-            <th>event</th>
+            <th>available</th>
         </tr>
     </thead>
     <tbody>
-        {% for record in state %}
+        {% for floor in floors %}
         <tr>
-            <td>{{ record.id }}</td>
-            <td>{{ record.timestamp|date:"Y-m-d H:i:s" }}</td>
-            <td><a href='{% url "host" record.host_id %}'>{{ record.host.name }}</a></td>
-            <td>{{ record.host.location }}</td>
-            <td>{{ record.get_event_display }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endif %}
-{% if records %}
-<h2>recent events</h2>
-<table class='table'>
-    <thead>
-        <tr>
-            <th>id</th>
-            <th>timestamp</th>
-            <th>host</th>
-            <th>event</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for record in records %}
-        <tr>
-            <td>{{ record.id }}</td>
-            <td>{{ record.timestamp|date:"Y-m-d H:i:s" }}</td>
-            <td>{{ record.host.name }}</td>
-            <td>{{ record.get_event_display }}</td>
+            <td>{{ floor.library }}, {{ floor.floor|ordinal }} floor</td>
+            <td>{{ floor.available }} of {{ floor.total }}</td>
         </tr>
         {% endfor %}
     </tbody>
