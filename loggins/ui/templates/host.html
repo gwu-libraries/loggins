@@ -2,6 +2,7 @@
 {% load url from future %}
 
 {% block content %}
+<div class='span12'>
 <h1>{{ host.name }} ({{ host.id}}) at {{ host.location }}</h1>
 
 {% if records %}
@@ -20,6 +21,6 @@
     </tbody>
 </table>
 {% endif %}
-
+</div>
 {% endblock content %}
 
