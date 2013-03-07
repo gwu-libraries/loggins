@@ -2,7 +2,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import connection
 from django.shortcuts import get_object_or_404, render
 
-from ui.models import Host
+from ui.models import Host, Record
 
 
 def _paginate(request, paginator):
@@ -74,4 +74,24 @@ def host(request, host_id):
         'records': records,
         'paginator': paginator,
         'page': page,
+    })
+
+
+def floor(request, code):
+    hosts = Record.objects.raw('''
+        SELECT *
+        FROM ui_record r1, ui_host        
+        WHERE timestamp=(
+            SELECT MAX(timestamp)
+            FROM ui_record
+            WHERE host_id=r1.host_id
+            AND SUBSTRING(location FROM 1 FOR 2) = %s
+        )
+        AND ui_host.id = r1.host_id
+        AND ui_host.is_active IS true
+        ORDER BY location
+        ''', [code])
+    return render(request, 'floor.html', {
+        'title': 'floor: %s' % code,
+        'hosts': hosts,
     })

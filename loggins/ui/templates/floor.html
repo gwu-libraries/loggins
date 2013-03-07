@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% load humanize %}
+
+{% block content %}
+<div class='span12'>
+{% if hosts %}
+<h1>current status</h1>
+<table class='table'>
+    <thead>
+        <tr>
+            <th>location</th>
+            <th>available</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for host in hosts %}
+        <tr>
+            <td>{{ host.location }}</td>
+            <td>
+                {% with host.get_event_display as latest %}
+                    {% if latest == 'login' %}
+                        unavailable
+                    {% elif latest == 'logout' %}
+                        available
+                    {% endif %}
+                {% endwith %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+</div>
+{% endblock content %}

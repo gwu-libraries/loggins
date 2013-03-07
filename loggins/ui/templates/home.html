@@ -11,6 +11,7 @@
         <tr>
             <th>location</th>
             <th>available</th>
+            <th>details</th>
         </tr>
     </thead>
     <tbody>
@@ -18,6 +19,7 @@
         <tr>
             <td>{{ floor.library }}, {{ floor.floor|ordinal }} floor</td>
             <td>{{ floor.available }} of {{ floor.total }}</td>
+            <td><a href='{% url 'floor' floor.code %}'>more</a></td>
         </tr>
         {% endfor %}
     </tbody>
