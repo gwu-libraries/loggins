@@ -1,10 +1,51 @@
+{% load url from future %}
 <!DOCTYPE html>
-<html>
+<html lang='en'>
     <head>
+        <meta charset='utf-8'>
         <title>{{ title }}</title>
+        {% block javascript %}
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+        {% endblock javascript %}
+        {% block javascript_extra %}
+        {% endblock javascript_extra %}
+        {% block styles %}
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet" />
+        <link href="{{ STATIC_URL }}css/libheader7_lite.css" rel="stylesheet" type='text/css' media='screen' />
+        <link href="{{ STATIC_URL }}css/libheader7_lite_bootswatch.css" rel="stylesheet" type='text/css' media='screen' />
+         <!--[if lt IE 9]>
+         <link href="{{ STATIC_URL }}css/libheader7_lite_ie.css" rel="stylesheet">
+         <![endif]-->
+        {% endblock styles %}
+        {% block styles_extra %}
+        {% endblock styles_extra %}
     </head>
     <body>
+        <!-- this is the Libsite7 Lite Header -->
+        <header class="navbar-fixed-top">
+            <div id="libheader-container" style="">
+                <div id="libheader" class="container" style="">
+                    <div class="libheader-logo hide-lo" style="">
+                        <a href="http://www.gwu.edu" target="_blank" title="GWU website"><img src="{{ STATIC_URL }}img/gwheaderlogo.png" alt="logo: The George Washington University" /></a>
+                    </div>
+                    <div class="libheader-liblink" style="">
+                        <a href="http://library.gwu.edu" target="_blank" title="GW Libraries website">GW Libraries</a>
+                    </div>
+                    <div class="libheader-link" style="">
+                        <a href="{% url 'home' %}" title="loggins home">loggins</a>
+                    </div>
+                    <!-- don't need these yet
+                    <div class="bullet" style="">&bull;</div>
+                    <div class="libheader-link" style=""><a href="#" target="_blank" title="">Placeholder Link 2</a></div>
+                    -->
+                </div>
+            </div>
+        </header>
+        <!-- end Libsite7 Lite Header -->
+
+        <div class='span12'>
 {% block content %}
 {% endblock content %}
+        </div>
     </body>
 </html>
