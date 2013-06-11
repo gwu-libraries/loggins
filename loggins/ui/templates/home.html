@@ -25,6 +25,24 @@
     </tbody>
 </table>
 {% endif %}
+{% if host_counts %}
+<table class='table'>
+    <thead>
+        <th>host</th>
+        <th>location</th>
+        <th># sessions</th>
+    </thead>
+    <tbody>
+        {% for host_count in host_counts %}
+        <tr>
+            <td>{{ host_count.host_id }}</td>
+            <td>{{ host_count.location }}</td>
+            <td>{{ host_count.count }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
 
 </div>
 {% endblock content %}

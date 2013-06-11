@@ -16,7 +16,7 @@
     <tbody>
         {% for host in hosts %}
         <tr>
-            <td>{{ host.location }}</td>
+            <td><a href='{% url "host" host.location %}'>{{ host.location }}</a></td>
             <td>
                 {% with host.get_event_display as latest %}
                     {% if latest == 'login' %}

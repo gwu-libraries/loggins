@@ -57,21 +57,32 @@ def home(request):
         codes[code] = s
     all_floors = sorted([(code, s) for code, s in codes.items()])
     floors = [floor for code, floor in all_floors]
+    cursor.execute('''
+        SELECT host_id, location, COUNT(*) AS the_count 
+        FROM ui_session, ui_host 
+        WHERE ui_host.id = ui_session.host_id 
+        AND ui_host.is_active = True 
+        GROUP BY host_id, location
+        ORDER BY the_count DESC; 
+        ''')
+    host_counts = [{'host_id': row[0], 'location': row[1], 'count': row[2]}
+            for row in cursor.fetchall()]
     return render(request, 'home.html', {
         'title': 'home',
         'codes': codes,
         'floors': floors,
+        'host_counts': host_counts,
     })
 
 
-def host(request, host_id):
-    host = get_object_or_404(Host, pk=host_id)
-    paginator = Paginator(host.records.order_by('-timestamp'), 25)
-    page, records = _paginate(request, paginator)
+def host(request, host_location):
+    host = get_object_or_404(Host, location=host_location, is_active=True)
+    paginator = Paginator(host.sessions.order_by('-timestamp_login'), 25)
+    page, sessions = _paginate(request, paginator)
     return render(request, 'host.html', {
         'title': 'host: %s (%s)' % (host.id, host.location),
         'host': host,
-        'records': records,
+        'sessions': sessions,
         'paginator': paginator,
         'page': page,
     })
