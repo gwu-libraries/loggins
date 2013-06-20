@@ -1,4 +1,4 @@
-django==1.5
+django==1.5.1
 django-tastypie
 psycopg2
 pytz
