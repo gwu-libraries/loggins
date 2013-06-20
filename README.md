@@ -89,10 +89,19 @@ pull in the static files (for admin, etc.):
 $ ./manage.py collectstatic
 ```
 
-set up the db with django:
+set up the db with django. WARNING: Be sure you are still using your virtualenv. DO NOT create a superuser when prompted!
 ```
 $ ./manage.py syncdb
-[add a superuser, you'll need it]
+```
+
+Migrate the database to the latest updates
+```
+$ ./manage.py migrate
+```
+
+Create the database super user
+```
+$ ./manage.py createsuperuser
 ```
 
 at this point you should be able to run the app in debugging mode:
