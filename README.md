@@ -136,7 +136,7 @@ $ sudo /etc/init.d/apache reload
 
 you should be up and running. to test it out, use curl:
 ```
-$ curl -i -H "Content-Type: application/json" -H "Accept: application/json" -u YOURUSERNAME:YOURPASSWORD  -X POST -d '{"event":"i","hostname":"test1"}' http://YOUR.SERVER.NAME:PORT/api/1/record/
+$ curl -i -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: ApiKey YOURUSERNAME:YOURAPIKEY" -X POST -d '{"event":"i","hostname":"test1"}' http://YOUR.SERVER.NAME:PORT/api/1/record/
 ```
 
 to create user/accounts/api keys, go to the django admin site at 
