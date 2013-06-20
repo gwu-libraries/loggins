@@ -42,7 +42,10 @@ def home(request):
         try:
             s = codes[code]
         except:
-            s = {'code': code, 'floor': floor}
+            # 'available' needs to default to 0; otherwise the logic here 
+            # never sets it, in the case where there are 0 hosts available
+            # on a floor
+            s = {'code': code, 'floor': floor, 'available': 0}
         if library == 'g':
             s['library'] = 'Gelman'
         elif library == 'e':
