@@ -5,17 +5,38 @@
 <div class='span12'>
 <h1>{{ host.name }} ({{ host.id}}) at {{ host.location }}</h1>
 
-{% if records %}
+{% if sessions %}
+{% if paginator.num_pages > 1 %}
+    <div class='pagination pagination-centered'>
+        <ul>
+            {% if sessions.has_previous %}
+            <li><a href="{% url 'host' host.location %}?page=1">&laquo; 1</a></li>
+            <li><a href="{% url 'host' host.location %}?page={{ sessions.previous_page_number }}">newer</a></li>
+            {% else %}
+            <li class='active'><a href="{% url 'host' host.location %}?page=1">&laquo;</a></li>
+            {% endif %}
+            <li class='active'>
+                <a href='#'>{{ sessions.number }}</a>
+            </li>
+            {% if sessions.has_next %}
+            <li><a href="{% url 'host' host.location %}?page={{ sessions.next_page_number }}">older</a><li>
+            <li><a href="{% url 'host' host.location %}?page={{ paginator.num_pages }}">{{ paginator.num_pages }} &raquo;</a><li>
+            {% endif %}
+        </ul>
+    </div>
+{% endif %}
 <table class='table'>
     <thead>
-        <th>timestamp</th>
-        <th>event</th>
+        <th>start</th>
+        <th>end</th>
+        <th>duration (min)</th>
     </thead>
     <tbody>
-        {% for record in records %}
+        {% for session in sessions %}
         <tr>
-            <td>{{ record.timestamp|date:"Y-m-d H:i:s" }}</td>
-            <td>{{ record.get_event_display }}</td>
+            <td>{{ session.timestamp_login|date:"Y-m-d D H:i:s" }}</td>
+            <td>{{ session.timestamp_logout|date:"Y-m-d D H:i:s" }}</td>
+            <td>{{ session.duration_minutes }}</td>
         </tr>
         {% endfor %}
     </tbody>

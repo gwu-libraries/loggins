@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.contrib.humanize.templatetags import humanize
 from django.db import models
 
 from tastypie.models import create_api_key
@@ -13,7 +14,21 @@ class Host(models.Model):
     location = models.CharField(max_length=5, default='', db_index=True)
 
     def __unicode__(self):
-        return '%s' % self.name
+        return '<Host %s %s>' % (self.location, self.name)
+
+    def display_location(self):
+        if len(self.location) != 4:
+            return ''
+        library_code = self.location[0]
+        library = ''
+        if library_code == 'g':
+            library  = 'Gelman'
+        elif library_code == 'e':
+            library = 'Eckles'
+        elif library_code == 'v':
+            library = 'VSTC'
+        floor = self.location[1]         
+        return '%s %s floor' % (library, humanize.ordinal(floor))
 
 
 class Record(models.Model):
@@ -35,7 +50,29 @@ class Record(models.Model):
                              choices=EVENT_TYPES, default=LOGIN)
     timestamp = models.DateTimeField(db_index=True, auto_now_add=True)
 
+    def __unicode__(self):
+        return '<Record %s %s (%s)>' % (self.host.location, 
+                self.get_event_display(), self.id)
+
     def save(self, *args, **kwargs):
         host, created = Host.objects.get_or_create(name=self.hostname)
         self.host = host
         super(Record, self).save(*args, **kwargs)
+
+
+class Session(models.Model):
+    host = models.ForeignKey(Host, related_name='sessions')
+    login = models.ForeignKey(Record, related_name='session_login')
+    logout = models.ForeignKey(Record, related_name='session_logout')
+    timestamp_login = models.DateTimeField(db_index=True)
+    timestamp_logout = models.DateTimeField(db_index=True)
+    duration_minutes = models.IntegerField(db_index=True)
+
+    @property
+    def duration(self):
+        return self.timestamp_logout - self.timestamp_login
+
+
+class Anomaly(models.Model):
+    login = models.ForeignKey(Record, related_name='anomalies')
+
