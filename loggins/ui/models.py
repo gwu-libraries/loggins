@@ -9,9 +9,20 @@ models.signals.post_save.connect(create_api_key, sender=User)
 
 
 class Host(models.Model):
+
+    WINDOWS7 = 'win7'
+    MACOSX = 'mac'
+
+    OS_TYPES = [
+        (WINDOWS7, 'Windows 7'),
+        (MACOSX, 'Mac OS-X'),
+    ]
+
+
     name = models.CharField(max_length=50, unique=True)
     is_active = models.BooleanField(default=True, db_index=True)
     location = models.CharField(max_length=5, default='', db_index=True)
+    os = models.CharField(db_index=True, max_length=4, choices=OS_TYPES, default='', blank=True)
 
     def __unicode__(self):
         return '<Host %s %s>' % (self.location, self.name)
