@@ -147,3 +147,14 @@ in the admin ui.
 
 to update existing api keys, go to the django admin page for the user
 account in question and update the api key value at the bottom.
+
+to generate some test data, use the ```login_monkey``` management
+command.  this will generate new records, one per random host, along
+with a set of initial testing hosts, at an interval you can specify.
+by default, it creates 20 "monkey" hosts, spread throughout the first
+floors of three of our libraries ('g', 'e', and 'v').  for example,
+this will add a new record every five seconds:
+
+```
+$ ./manage.py login_monkey --interval 5 --verbose
+```
