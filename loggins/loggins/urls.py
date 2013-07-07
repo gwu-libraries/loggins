@@ -17,11 +17,9 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('ui.views',
     url(r'^$', 'home', name='home'),
-# Requires the numeric segment of the location to be 3 digits:
-#    url(r'^host/(?P<host_location>[a-z]\d{3})/$', 'host', name='host'),
-#
-# Allows the numeric portion to be any number of digits (1 or more):
-    url(r'^location/(?P<bldgfloorcode>[a-z][0-9])/(?P<station>\w+)/$', 'location', name='location'),
-# code should be something like 'g1' for Gelman 1st floor
+    # example:  location/g2/PC101   for PC101 on Gelman 2nd floor
+    url(r'^location/(?P<bldgfloorcode>[a-z][0-9])/(?P<station>\w+)/$',
+        'location', name='location'),
+    # code should be something like 'g2' for Gelman 2nd floor
     url(r'^floor/(?P<code>[a-z][0-9])/$', 'floor', name='floor'),
 )
