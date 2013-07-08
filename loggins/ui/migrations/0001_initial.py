@@ -15,11 +15,12 @@ class Migration(SchemaMigration):
             ('floor', self.gf('django.db.models.fields.PositiveSmallIntegerField')()),
             ('station_name', self.gf('django.db.models.fields.CharField')(max_length=50, db_index=True)),
             ('hostname', self.gf('django.db.models.fields.CharField')(max_length=50, db_index=True)),
-            ('ip_address', self.gf('django.db.models.fields.CharField')(max_length=15, db_index=True)),
-            ('state', self.gf('django.db.models.fields.CharField')(default='', max_length=2, db_index=True)),
-            ('observation_time', self.gf('django.db.models.fields.DateTimeField')(db_index=True)),
-            ('last_login_start_time', self.gf('django.db.models.fields.DateTimeField')(db_index=True)),
-            ('last_offline_start_time', self.gf('django.db.models.fields.DateTimeField')(db_index=True)),
+            ('ip_address', self.gf('django.db.models.fields.IPAddressField')(max_length=15, db_index=True)),
+            ('os', self.gf('django.db.models.fields.CharField')(default='', max_length=4, db_index=True, blank=True)),
+            ('state', self.gf('django.db.models.fields.CharField')(default='n', max_length=2, db_index=True)),
+            ('observation_time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, db_index=True, blank=True)),
+            ('last_login_start_time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, db_index=True, blank=True)),
+            ('last_offline_start_time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, db_index=True, blank=True)),
         ))
         db.send_create_signal(u'ui', ['Location'])
 
@@ -49,11 +50,12 @@ class Migration(SchemaMigration):
             'floor': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
             'hostname': ('django.db.models.fields.CharField', [], {'max_length': '50', 'db_index': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'ip_address': ('django.db.models.fields.CharField', [], {'max_length': '15', 'db_index': 'True'}),
-            'last_login_start_time': ('django.db.models.fields.DateTimeField', [], {'db_index': 'True'}),
-            'last_offline_start_time': ('django.db.models.fields.DateTimeField', [], {'db_index': 'True'}),
-            'observation_time': ('django.db.models.fields.DateTimeField', [], {'db_index': 'True'}),
-            'state': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '2', 'db_index': 'True'}),
+            'ip_address': ('django.db.models.fields.IPAddressField', [], {'max_length': '15', 'db_index': 'True'}),
+            'last_login_start_time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'db_index': 'True', 'blank': 'True'}),
+            'last_offline_start_time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'db_index': 'True', 'blank': 'True'}),
+            'observation_time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'db_index': 'True', 'blank': 'True'}),
+            'os': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '4', 'db_index': 'True', 'blank': 'True'}),
+            'state': ('django.db.models.fields.CharField', [], {'default': "'n'", 'max_length': '2', 'db_index': 'True'}),
             'station_name': ('django.db.models.fields.CharField', [], {'max_length': '50', 'db_index': 'True'})
         },
         u'ui.session': {
