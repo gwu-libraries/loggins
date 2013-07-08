@@ -8,47 +8,61 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Host'
-        db.create_table('ui_host', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=50)),
-            ('is_active', self.gf('django.db.models.fields.BooleanField')(default=True, db_index=True)),
-        ))
-        db.send_create_signal('ui', ['Host'])
-
-        # Adding model 'Record'
-        db.create_table('ui_record', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('host', self.gf('django.db.models.fields.related.ForeignKey')(related_name='records', to=orm['ui.Host'])),
+        # Adding model 'Location'
+        db.create_table(u'ui_location', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('building', self.gf('django.db.models.fields.CharField')(default='', max_length=2, db_index=True)),
+            ('floor', self.gf('django.db.models.fields.PositiveSmallIntegerField')()),
+            ('station_name', self.gf('django.db.models.fields.CharField')(max_length=50, db_index=True)),
             ('hostname', self.gf('django.db.models.fields.CharField')(max_length=50, db_index=True)),
-            ('event', self.gf('django.db.models.fields.CharField')(default='i', max_length=2, db_index=True)),
-            ('timestamp', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, db_index=True, blank=True)),
+            ('ip_address', self.gf('django.db.models.fields.CharField')(max_length=15, db_index=True)),
+            ('state', self.gf('django.db.models.fields.CharField')(default='', max_length=2, db_index=True)),
+            ('observation_time', self.gf('django.db.models.fields.DateTimeField')(db_index=True)),
+            ('last_login_start_time', self.gf('django.db.models.fields.DateTimeField')(db_index=True)),
+            ('last_offline_start_time', self.gf('django.db.models.fields.DateTimeField')(db_index=True)),
         ))
-        db.send_create_signal('ui', ['Record'])
+        db.send_create_signal(u'ui', ['Location'])
+
+        # Adding model 'Session'
+        db.create_table(u'ui_session', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('location', self.gf('django.db.models.fields.related.ForeignKey')(related_name='locations', to=orm['ui.Location'])),
+            ('timestamp_start', self.gf('django.db.models.fields.DateTimeField')(db_index=True)),
+            ('timestamp_end', self.gf('django.db.models.fields.DateTimeField')(db_index=True)),
+            ('session_type', self.gf('django.db.models.fields.CharField')(default='', max_length=2, db_index=True)),
+        ))
+        db.send_create_signal(u'ui', ['Session'])
 
 
     def backwards(self, orm):
-        # Deleting model 'Host'
-        db.delete_table('ui_host')
+        # Deleting model 'Location'
+        db.delete_table(u'ui_location')
 
-        # Deleting model 'Record'
-        db.delete_table('ui_record')
+        # Deleting model 'Session'
+        db.delete_table(u'ui_session')
 
 
     models = {
-        'ui.host': {
-            'Meta': {'object_name': 'Host'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True', 'db_index': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '50'})
-        },
-        'ui.record': {
-            'Meta': {'object_name': 'Record'},
-            'event': ('django.db.models.fields.CharField', [], {'default': "'i'", 'max_length': '2', 'db_index': 'True'}),
-            'host': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'records'", 'to': "orm['ui.Host']"}),
+        u'ui.location': {
+            'Meta': {'object_name': 'Location'},
+            'building': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '2', 'db_index': 'True'}),
+            'floor': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
             'hostname': ('django.db.models.fields.CharField', [], {'max_length': '50', 'db_index': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'timestamp': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'db_index': 'True', 'blank': 'True'})
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'ip_address': ('django.db.models.fields.CharField', [], {'max_length': '15', 'db_index': 'True'}),
+            'last_login_start_time': ('django.db.models.fields.DateTimeField', [], {'db_index': 'True'}),
+            'last_offline_start_time': ('django.db.models.fields.DateTimeField', [], {'db_index': 'True'}),
+            'observation_time': ('django.db.models.fields.DateTimeField', [], {'db_index': 'True'}),
+            'state': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '2', 'db_index': 'True'}),
+            'station_name': ('django.db.models.fields.CharField', [], {'max_length': '50', 'db_index': 'True'})
+        },
+        u'ui.session': {
+            'Meta': {'object_name': 'Session'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'location': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'locations'", 'to': u"orm['ui.Location']"}),
+            'session_type': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '2', 'db_index': 'True'}),
+            'timestamp_end': ('django.db.models.fields.DateTimeField', [], {'db_index': 'True'}),
+            'timestamp_start': ('django.db.models.fields.DateTimeField', [], {'db_index': 'True'})
         }
     }
 

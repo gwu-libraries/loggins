@@ -14,18 +14,11 @@ admin.site.unregister(User)
 admin.site.register(User, UserModelAdmin)
 
 
-class HostAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'location', 'os', 'is_active']
-    list_filter = ['is_active']
-    search_fields = ['name']
-admin.site.register(models.Host, HostAdmin)
-
-
-class RecordAdmin(admin.ModelAdmin):
-    list_display = ['id', 'host', 'event', 'timestamp']
-    list_filter = ['event', 'timestamp']
-    search_fields = ['host']
-admin.site.register(models.Record, RecordAdmin)
+class LocationAdmin(admin.ModelAdmin):
+    list_display = ['id', 'building', 'floor', 'station_name', 'hostname', 'state', 'observation_time']
+    list_filter = ['building']
+    search_fields = ['station_name']
+admin.site.register(models.Location, LocationAdmin)
 
 
 class DurationFilter(admin.SimpleListFilter):
@@ -60,13 +53,8 @@ class DurationFilter(admin.SimpleListFilter):
 
 
 class SessionAdmin(admin.ModelAdmin):
-    list_display = ['id', 'host', 'duration_minutes', 'duration',
-            'timestamp_login', 'timestamp_logout']
+    list_display = ['id', 'location', 'session_type', 'timestamp_start', 'timestamp_end']
     list_filter = [DurationFilter]
-    search_fields = ['host']
+    search_fields = ['location']
 admin.site.register(models.Session, SessionAdmin)
 
-
-class AnomalyAdmin(admin.ModelAdmin):
-    list_display = ['id', 'login']
-admin.site.register(models.Anomaly, AnomalyAdmin)

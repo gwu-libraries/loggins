@@ -4,28 +4,20 @@
 
 {% block content %}
 <div class='span12'>
-{% if hosts %}
-<h1>current status</h1>
+{% if locations %}
+<h1>current status for workstations on {{building}} {{floorname}} </h1>
 <table class='table'>
     <thead>
         <tr>
-            <th>location</th>
-            <th>available</th>
+            <th>station</th>
+            <th>status</th>
         </tr>
     </thead>
     <tbody>
-        {% for host in hosts %}
+        {% for location in locations %}
         <tr>
-            <td><a href='{% url "host" host.location %}'>{{ host.location }}</a></td>
-            <td>
-                {% with host.get_event_display as latest %}
-                    {% if latest == 'login' %}
-                        unavailable
-                    {% elif latest == 'logout' %}
-                        available
-                    {% endif %}
-                {% endwith %}
-            </td>
+            <td><a href="{% url 'location' bldgfloorcode location.station_name %}">{{ location.station_name }}</a></td>
+            <td>{{location.state_display}}</td>
         </tr>
         {% endfor %}
     </tbody>
