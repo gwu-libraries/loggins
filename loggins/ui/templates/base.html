@@ -5,9 +5,17 @@
         <meta charset='utf-8'>
         <title>{{ title }}</title>
         {% block javascript %}
-        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+            <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js'></script>
+            <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
         {% endblock javascript %}
         {% block javascript_extra %}
+            <script type="text/javascript">
+                $(function() {
+                    setTimeout(function() {
+                        window.location = location.href;
+                    }, 30000);
+                });
+            </script>
         {% endblock javascript_extra %}
         {% block styles %}
         <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet" />
