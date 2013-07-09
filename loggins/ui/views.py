@@ -30,9 +30,9 @@ def home(request):
         # compute total vs. available locations
         locations_on_this_floor = l.filter(building=f['building'],
                                            floor=f['floor'])
-        num_total = len(locations_on_this_floor)
-        num_available = len(locations_on_this_floor.
-                            filter(state=Location.AVAILABLE))
+        num_total = locations_on_this_floor.count()
+        num_available = \
+            locations_on_this_floor.filter(state=Location.AVAILABLE).count()
         f['building_display'] = bldgname
         f['floor_display'] = floorname
         f['num_total'] = num_total
