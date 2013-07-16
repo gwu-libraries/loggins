@@ -1,6 +1,9 @@
 from django.contrib.auth.models import User
 from django.contrib.humanize.templatetags import humanize
 from django.db import models
+from django.db.models.signals import pre_save
+
+from django.dispatch import receiver
 
 from tastypie.models import create_api_key
 
@@ -81,3 +84,50 @@ class Session(models.Model):
 
 #class Anomaly(models.Model):
 #    login = models.ForeignKey(Record, related_name='anomalies')
+
+
+@receiver(pre_save, sender=Location)
+def location_state_change_reciever(sender, instance, **kwargs):
+    #import pdb
+    #pdb.set_trace()
+    if instance.id:
+        old_instance = Location.objects.get(id=instance.id)
+
+        if old_instance.state == Location.AVAILABLE:
+            if instance.state == Location.LOGGED_IN:
+                print "User logged into %s" % instance
+                instance.last_login_start_time = instance.observation_time
+
+            elif instance.state == Location.NO_RESPONSE:
+                print "%s went offline" % instance
+                instance.last_offline_start_time = instance.observation_time
+
+        elif old_instance.state == Location.LOGGED_IN:
+            if instance.state != Location.LOGGED_IN:
+                login_session = Session(session_type=Session.LOGIN)
+                login_session.location = instance
+                login_session.timestamp_start = instance.last_login_start_time
+                login_session.timestamp_end = instance.observation_time
+                login_session.save()
+
+                instance.last_login_start_time = None
+                print "Login session created for %s" % instance
+
+                if instance.state == Location.NO_RESPONSE:
+                    print "%s went offline" % instance
+                    instance.last_offline_start_time = instance.observation_time
+
+        elif old_instance.state == Location.NO_RESPONSE:
+            if instance.state != Location.NO_RESPONSE:
+                login_session = Session(session_type=Session.OFFLINE)
+                login_session.location = instance
+                login_session.timestamp_start = instance.last_offline_start_time
+                login_session.timestamp_end = instance.observation_time
+                login_session.save()
+
+                instance.last_offline_start_time = None
+                print "Offline session created for %s" % instance
+
+                if instance.state == Location.LOGGED_IN:
+                    print "User logged into %s" % instance
+                    instance.last_login_start_time = instance.observation_time
