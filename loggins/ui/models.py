@@ -88,8 +88,6 @@ class Session(models.Model):
 
 @receiver(pre_save, sender=Location)
 def location_state_change_reciever(sender, instance, **kwargs):
-    #import pdb
-    #pdb.set_trace()
     if instance.id:
         old_instance = Location.objects.get(id=instance.id)
 
@@ -110,7 +108,6 @@ def location_state_change_reciever(sender, instance, **kwargs):
                 login_session.timestamp_end = instance.observation_time
                 login_session.save()
 
-                instance.last_login_start_time = None
                 print "Login session created for %s" % instance
 
                 if instance.state == Location.NO_RESPONSE:
@@ -119,13 +116,12 @@ def location_state_change_reciever(sender, instance, **kwargs):
 
         elif old_instance.state == Location.NO_RESPONSE:
             if instance.state != Location.NO_RESPONSE:
-                login_session = Session(session_type=Session.OFFLINE)
-                login_session.location = instance
-                login_session.timestamp_start = instance.last_offline_start_time
-                login_session.timestamp_end = instance.observation_time
-                login_session.save()
+                offline_session = Session(session_type=Session.OFFLINE)
+                offline_session.location = instance
+                offline_session.timestamp_start = instance.last_offline_start_time
+                offline_session.timestamp_end = instance.observation_time
+                offline_session.save()
 
-                instance.last_offline_start_time = None
                 print "Offline session created for %s" % instance
 
                 if instance.state == Location.LOGGED_IN:
