@@ -22,17 +22,16 @@ class Command(BaseCommand):
                     (location.ip_address, 161)),
                     '1.3.6.1.4.1.25071.1.2.6.1.1.2',
                     '1.3.6.1.4.1.25071.1.1.2.1.1.3',)
+            location.observation_time = datetime.utcnow().replace(tzinfo=utc)
 
             if errorIndication:
                 print(str(location.ip_address) + ': ' + str(errorIndication))
                 location.state = Location.NO_RESPONSE
-                location.observation_time = datetime.utcnow().replace(tzinfo=utc)
             else:
                 if errorStatus:
                     print('%s at %s' % (errorStatus.prettyPrint(),
                                         errorIndex and varBindTable[-1][int(errorIndex)-1] or '?'))
                     location.state = Location.NO_RESPONSE
-                    location.observation_time = datetime.utcnow().replace(tzinfo=utc)
                 else:
                     hostname = varBindTable[0][0][1]
                     status = varBindTable[0][1][1]
@@ -42,5 +41,4 @@ class Command(BaseCommand):
                     else:
                         location.state = Location.LOGGED_IN
                         print '%s - %s' % (hostname, Location.STATES[1][1])
-                    location.observation_time = datetime.utcnow().replace(tzinfo=utc)
             location.save()
