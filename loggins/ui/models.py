@@ -108,7 +108,6 @@ def location_state_change_reciever(sender, instance, **kwargs):
                 login_session.timestamp_end = instance.observation_time
                 login_session.save()
 
-                instance.last_login_start_time = None
                 print "Login session created for %s" % instance
 
                 if instance.state == Location.NO_RESPONSE:
@@ -123,7 +122,6 @@ def location_state_change_reciever(sender, instance, **kwargs):
                 offline_session.timestamp_end = instance.observation_time
                 offline_session.save()
 
-                instance.last_offline_start_time = None
                 print "Offline session created for %s" % instance
 
                 if instance.state == Location.LOGGED_IN:
