@@ -2,8 +2,12 @@
 <VirtualHost *:80>
 # SSL: 
 # <VirtualHost *:443>
-    ServerAdmin YOUR.WEBMASTER@EXAMPLE.COM
-    ServerName *:80
+
+    ServerAdmin <YOUR.WEBMASTER@EXAMPLE.COM>
+    ServerName <YOUR_HOSTNAME>
+    #Example:
+    #ServerName loggins.example.com
+
     # SSL:
     # ServerName *:443
     ErrorLog ${APACHE_LOG_DIR}/error.log
@@ -15,34 +19,34 @@
     # SSLCertificateFile /etc/apache2/ssl/apache.crt
     # SSLCertificateKeyFile /etc/apache2/ssl/apache.key
 
-    Alias /static/ /PATH/TO/loggins/loggins/static/
+    Alias /static/ /<PATH_TO_loggins>/loggins/ui/static/
     <Directory /PATH/TO/loggins/loggins/static>
         Order deny,allow
         Allow from all
     </Directory>
 
-    Alias /media/ /PATH/TO/loggins/loggins/media/
-    <Directory /PATH/TO/loggins/loggins/media>
+    Alias /media/ /<PATH_TO_loggins>/loggins/ui/media/
+    <Directory /<PATH_TO_loggins>/loggins/ui/media>
         Order deny,allow
         Allow from all
     </Directory>
 
     # For WSGI daemon mode:
     #   see http://code.google.com/p/modwsgi/wiki/QuickConfigurationGuide
-    WSGIDaemonProcess YOUR.HOSTNAME.HERE processes=2 threads=15 python-path=/PATH/TO/YOUR/VENV/lib/python/2.X/site-packages:/PATH/TO/loggins/loggins
-    WSGIProcessGroup YOUR.HOSTNAME.HERE
+    WSGIDaemonProcess <YOUR.HOSTNAME.HERE> processes=2 threads=15 python-path=/<PATH_TO_YOUR_VENV>/lib/python/2.X/site-packages:/<PATH_TO_loggins>/loggins
+    WSGIProcessGroup <YOUR.HOSTNAME.HERE>
 
     # For WSGI embedded mode:
     #WSGIPythonPath /PATH/TO/loggins
     # If using a virtualenv, uncomment and tweak next line (inc. python version):
     # WSGIPythonPath /PATH/TO/YOUR/VENV/lib/python/2.X/site-packages
 
-    WSGIScriptAlias / /PATH/TO/loggins/loggins/loggins/wsgi.py
+    WSGIScriptAlias / /<PATH_TO_loggins>/loggins/loggins/wsgi.py
 
     # required for tastypie/wsgi/apache integration
     WSGIPassAuthorization On
 
-    <Directory /PATH/TO/loggins/loggins/ui>
+    <Directory /<PATH_TO_loggins>/loggins/loggins>
         <Files wsgi.py>
             Order deny,allow
             Allow from all
