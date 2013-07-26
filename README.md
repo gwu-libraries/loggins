@@ -25,6 +25,11 @@ $ sudo apt-get install mysql-server libmysqld-dev
 [etc]
 ```
 
+Install Git
+```
+$ sudo apt-get install git-core
+```
+
 create the database you'll use (pgsql example included, do equiv
 for mysql):
 ```
@@ -131,7 +136,7 @@ then reload apache:
 ```
 $ sudo a2dissite default
 $ sudo a2ensite loggins
-$ sudo /etc/init.d/apache reload
+$ sudo /etc/init.d/apache2 reload
 ```
 
 you should be up and running. to test it out, use curl:
