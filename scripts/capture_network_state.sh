@@ -17,7 +17,7 @@ LOGGINS_PROJECT_DIR=''
 #Example: LOGGINS_INSTALL_DIR = '/home/darshan/projects/loggins/loggins'
 
 if [ "$LOGGINS_PATH_TO_ENV" == "" ]; then
-    echo "Please configure the path to virual environment under Loggins application"
+    echo "Please configure the path to virtual environment under Loggins application"
     exit 1
 fi
 
