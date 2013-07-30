@@ -75,7 +75,8 @@ $ pip install -r requirements.txt
 ```
 
 copy over the local settings template to a real local settings file,
-then add in correct ADMINS and DATABASE info.
+then add in correct ADMINS, DATABASE and SNMP_COMMUNITY_STRING info.
+Note: If you don't have a SNMP community string, just enter 'public'
 ```
 $ cd loggins
 $ cp loggins/local_settings.py.template loggins/local_settings.py

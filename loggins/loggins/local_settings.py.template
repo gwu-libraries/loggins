@@ -16,3 +16,5 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+SNMP_COMMUNITY_STRING = ''
