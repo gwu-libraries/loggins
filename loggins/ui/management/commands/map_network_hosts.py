@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
@@ -36,8 +37,11 @@ class Command(BaseCommand):
                                             errorIndex and varBindTable[-1][int(errorIndex)-1] or '?'))
                     else:
                         hostname = varBindTable[0][0][1]
-                        location = Location.objects.get(hostname=hostname)
-                        if location.ip_address != ip_address:
-                            location.ip_aadress = ip_address
-                            print 'Updated IP address for host - %s' % location.hostname
-                            location.save()
+                        try:
+                            location = Location.objects.get(hostname=hostname)
+                            if location.ip_address != ip_address:
+                                location.ip_aadress = ip_address
+                                print 'Updated IP address for host - %s' % location.hostname
+                                location.save()
+                        except ObjectDoesNotExist:
+                            print 'Location with hostname <' + hostname + '> does not exist.'
