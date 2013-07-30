@@ -16,11 +16,17 @@ def _paginate(request, paginator):
     return page, items
 
 
-def home(request):
-    l = Location.objects
+def home(request, library):
+    locations = Location.objects
     # create an iterable with one item per unique building/floor combo
-    buildingfloors = l.values('building', 'floor').distinct('building',
-                                                            'floor')
+    buildingfloors = locations.values('building', 'floor').distinct(
+        'building', 'floor')
+    # if URL contained a specific (and known) library, filter reults further
+    if library.lower() in ['gelman', 'eckles', 'vstc']:
+        # WARNING: this makes an assumption about
+        # the choices dictionary in the model
+        librarycode = {'gelman': 'g', 'eckles': 'e', 'vstc': 'v'}
+        buildingfloors = buildingfloors.filter(building=librarycode[library])
     # compute display info for each floor
     for f in buildingfloors:
         temploc = Location(building=f['building'], floor=f['floor'])
@@ -28,19 +34,31 @@ def home(request):
         bldgname = temploc.get_building_display()
         floorname = temploc.display_floor()
         # compute total vs. available locations
-        locations_on_this_floor = l.filter(building=f['building'],
-                                           floor=f['floor'])
+        locations_on_this_floor = locations.filter(building=f['building'],
+                                                   floor=f['floor'])
         num_total = locations_on_this_floor.count()
         num_available = \
             locations_on_this_floor.filter(state=Location.AVAILABLE).count()
+        f['buildingfloorcode'] = f['building'] + str(f['floor'])
         f['building_display'] = bldgname
         f['floor_display'] = floorname
         f['num_total'] = num_total
         f['num_available'] = num_available
 
+    if library.lower() == 'gelman':
+        library_filter = 'Gelman'
+    elif library.lower() == 'eckles':
+        library_filter = 'Eckles'
+    elif library.lower() == 'vstc':
+        library_filter = 'VSTC'
+    else:
+        library_filter = 'All'
+
     return render(request, 'home.html', {
         'buildingfloors': buildingfloors,
+        'library_filter': library_filter,
     })
+
 
 
 def location(request, bldgfloorcode, station):
