@@ -34,16 +34,23 @@ def home(request, library):
         bldgname = temploc.get_building_display()
         floorname = temploc.display_floor()
         # compute total vs. available locations
-        locations_on_this_floor = locations.filter(building=f['building'],
-                                                   floor=f['floor'])
-        num_total = locations_on_this_floor.count()
-        num_available = \
-            locations_on_this_floor.filter(state=Location.AVAILABLE).count()
+        locations_on_this_floor = locations.filter(
+            building=f['building'], floor=f['floor'])
+        winlocations = locations_on_this_floor.filter(os=Location.WINDOWS7)
+        num_total_win = winlocations.count()
+        num_available_win = winlocations.filter(
+            state=Location.AVAILABLE).count()
+        maclocations = locations_on_this_floor.filter(os=Location.MACOSX)
+        num_total_mac = maclocations.count()
+        num_available_mac = maclocations.filter(
+            state=Location.AVAILABLE).count()
         f['buildingfloorcode'] = f['building'] + str(f['floor'])
         f['building_display'] = bldgname
         f['floor_display'] = floorname
-        f['num_total'] = num_total
-        f['num_available'] = num_available
+        f['num_total_win'] = num_total_win
+        f['num_available_win'] = num_available_win
+        f['num_total_mac'] = num_total_mac
+        f['num_available_mac'] = num_available_mac
 
     if library.lower() == 'gelman':
         library_filter = 'Gelman'

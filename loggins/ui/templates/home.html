@@ -5,24 +5,21 @@
 {% block content %}
 <div class='span12'>
 <h1>{{library_filter}} library workstations</h1>
-<h3>{% if library_filter != "All" %}<a href="{% url 'home' %}">All</a>{% endif %}
-    {% if library_filter != "Gelman" %}<a href="{% url 'gelman-home' %}">Gelman</a>{% endif %}
-    {% if library_filter != "Eckles" %}<a href="{% url 'eckles-home' %}">Eckles</a>{% endif %}
-    {% if library_filter != "VSTC" %}<a href="{% url 'vstc-home' %}">VSTC</a>{% endif %}</h3>
 {% if buildingfloors %}
 <table class='table'>
     <thead>
         <tr>
-            <th>location</th>
-            <th>available</th>
-            <th>details</th>
+            <th>Location</th>
+            <th>Windows Workstations</th>
+            <th>Mac Workstations</th>
         </tr>
     </thead>
     <tbody>
         {% for buildingfloor in buildingfloors %}
         <tr>
             <td><a href="{% url 'floor' buildingfloor.buildingfloorcode %}">{{ buildingfloor.building_display}}, {{buildingfloor.floor_display }}</a></td>
-            <td>{{buildingfloor.num_available}} of {{buildingfloor.num_total}} available</td>
+            <td>{{buildingfloor.num_available_win}} of {{buildingfloor.num_total_win}} available</td>
+            <td>{{buildingfloor.num_available_mac}} of {{buildingfloor.num_total_mac}} available</td>
         </tr>
         {% endfor %}
     </tbody>
@@ -46,6 +43,11 @@
     </tbody>
 </table>
 {% endif %}
-
+<h3>
+{% if library_filter != "All" %}<a href="{% url 'home' %}">All</a>{% endif %}
+    {% if library_filter != "Gelman" %}<a href="{% url 'gelman-home' %}">Gelman</a>{% endif %}
+    {% if library_filter != "Eckles" %}<a href="{% url 'eckles-home' %}">Eckles</a>{% endif %}
+    {% if library_filter != "VSTC" %}<a href="{% url 'vstc-home' %}">VSTC</a>{% endif %}
+</h3>
 </div>
 {% endblock content %}
