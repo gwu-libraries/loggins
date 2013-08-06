@@ -22,7 +22,8 @@ def home(request, library):
     buildingfloors = locations.values('building', 'floor').distinct(
         'building', 'floor')
     # if URL contained a specific (and known) library, filter reults further
-    if library.lower() in ['gelman', 'eckles', 'vstc']:
+    library = library.lower()
+    if library in ['gelman', 'eckles', 'vstc']:
         # WARNING: this makes an assumption about
         # the choices dictionary in the model
         librarycode = {'gelman': 'g', 'eckles': 'e', 'vstc': 'v'}
@@ -105,4 +106,30 @@ def floor(request, code):
         'locations': locations,
         'building': bldgname,
         'floorname': floorname,
+    })
+
+
+def offline(request, library):
+    library = library.lower()
+    if library in ['gelman', 'eckles', 'vstc']:
+        # WARNING: this makes an assumption about
+        # the choices dictionary in the model
+        librarycode = {'gelman': 'g', 'eckles': 'e', 'vstc': 'v'}[library]
+
+    locations = Location.objects.filter(building=librarycode,
+                                        state=Location.NO_RESPONSE).\
+        order_by('building', 'floor').values()
+    temploc = Location(building=librarycode, floor=0)
+    # get building name and floor verbage for this building/floor
+    bldgname = temploc.get_building_display()
+    #TODO: floorname is not displaying properly for 0th floor
+    for l in locations:
+        temploc = Location(building=librarycode, floor=l['floor'])
+        floorname = temploc.display_floor()
+        l['floorname'] = floorname
+        l['state_display'] = Location(state=l['state']).get_state_display()
+        l['bldgfloorcode'] = librarycode + str(l['floor'])
+    return render(request, 'offline.html', {
+        'locations': locations,
+        'building': bldgname,
     })
