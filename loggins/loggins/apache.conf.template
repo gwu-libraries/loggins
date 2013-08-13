@@ -19,17 +19,59 @@
     # SSLCertificateFile /etc/apache2/ssl/apache.crt
     # SSLCertificateKeyFile /etc/apache2/ssl/apache.key
 
-    Alias /static/ /<PATH_TO_loggins>/loggins/ui/static/
-    <Directory /PATH/TO/loggins/loggins/static>
-        Order deny,allow
-        Allow from all
-    </Directory>
+    # Set your document root
+    DocumentRoot /<PATH_TO_LOGGINS>/loggins/loggins
+    # Example:
+    # DocumentRoot /home/darshan/projects/loggins/loggins/loggins
 
-    Alias /media/ /<PATH_TO_loggins>/loggins/ui/media/
-    <Directory /<PATH_TO_loggins>/loggins/ui/media>
+    ########################
+    # Static File Aliasing #
+    ########################
+
+    # Set aliases to your static media and javascript directories
+
+    # CSS files
+    AliasMatch ^/static/css/([^/]*\.css) /<PATH_TO_LOGGINS>/loggins/ui/static/css/$1
+    # Example:
+    # AliasMatch ^/static/css/([^/]*\.css) /home/darshan/projects/loggins/loggins/ui/static/css/$1
+
+    # Images
+    AliasMatch ^/static/img/([^/]*\.png) /<PATH_TO_LOGGINS>/loggins/ui/static/img/$1
+    # Example:
+    # AliasMatch ^/static/img/([^/]*\.png) /home/darshan/projects/loggins/loggins/ui/static/img/$1
+
+    AliasMatch ^/static/img/([^/]*\.jpg) /<PATH_TO_LOGGINS>/loggins/ui/static/img/$1
+    # Example:
+    # AliasMatch ^/static/img/([^/]*\.jpg) /home/darshan/projects/loggins/loggins/ui/static/img/$1
+
+    AliasMatch ^/static/img/([^/]*\.ico) /<PATH_TO_LOGGINS>/loggins/ui/static/img/$1
+    # Example:
+    # AliasMatch ^/static/img/([^/]*\.ico) /home/darshan/projects/loggins/loggins/ui/static/img/$1
+
+    # JavaScript
+    AliasMatch ^/static/admin/ij([^/]*\.js) /<PATH_TO_LOGGINS>/ENV/lib/python2.7/site-packages/django/contrib/admin/static/admin/css/$1
+    # Example:
+    # AliasMatch ^/static/admin/ij([^/]*\.js) /home/darshan/projects/loggins/ENV/lib/python2.7/site-packages/django/contrib/admin/static/admin/css/$1
+
+    ###############################
+    # Add the Django admin module #
+    ###############################
+
+    Alias /static/admin/ /<PATH_TO_LOGGINS>/ENV/lib/python2.7/site-packages/django/contrib/admin/static/admin/
+    # Example:
+    # Alias /static/admin/ /home/darshan/projects/loggins/ENV/lib/python2.7/site-packages/django/contrib/admin/static/admin/
+
+    # Add permissions to django admin module
+    <Directory /<PATH_TO_LOGGINS>/ENV/lib/python2.7/site-packages/django/contrib/admin/static/admin/>
         Order deny,allow
         Allow from all
     </Directory>
+    # Example:
+    # <Directory /home/darshan/projects/loggins/ENV/lib/python2.7/site-packages/django/contrib/admin/static/admin/>
+    #     Order deny,allow
+    #     Allow from all
+    # </Directory>
+
 
     # For WSGI daemon mode:
     #   see http://code.google.com/p/modwsgi/wiki/QuickConfigurationGuide
