@@ -60,6 +60,8 @@ class Location(models.Model):
     def display_floor(self):
         if self.floor == 0:
             return 'Lower Level'
+        elif self.floor == 2:
+            return 'Entrance Floor'
         else:
             return '%s floor' % humanize.ordinal(self.floor)
 
