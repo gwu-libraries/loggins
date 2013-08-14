@@ -15,7 +15,7 @@ admin.site.register(User, UserModelAdmin)
 
 
 class LocationAdmin(admin.ModelAdmin):
-    list_display = ['id', 'building', 'floor', 'station_name', 'hostname', 'state', 'observation_time']
+    list_display = ['id', 'building', 'floor', 'station_name', 'hostname', 'os', 'state', 'observation_time']
     list_filter = ['building']
     search_fields = ['station_name']
 admin.site.register(models.Location, LocationAdmin)
