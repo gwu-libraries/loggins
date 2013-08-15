@@ -56,7 +56,7 @@ class Command(BaseCommand):
             # for each monkey
             for i in range(0, int(options.get('monkeys', DEFAULT_NUM_MONKEYS))):
                 # pick a random location
-                location = Location.objects.get(id=random.randint(1, num_locations))
+                location = locations[random.randint(0, num_locations-1)]
                 randstate = random.randint(0, 2)
                 if randstate == 0:
                     location.state = Location.AVAILABLE
