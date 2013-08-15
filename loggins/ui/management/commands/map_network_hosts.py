@@ -38,7 +38,7 @@ class Command(BaseCommand):
                     else:
                         hostname = varBindTable[0][0][1]
                         try:
-                            location = Location.objects.get(hostname=hostname)
+                            location = Location.objects.get(hostname__iexact=hostname)
                             if location.ip_address != ip_address:
                                 location.ip_aadress = ip_address
                                 print 'Updated IP address for host - %s' % location.hostname
