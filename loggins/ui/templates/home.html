@@ -49,5 +49,8 @@
     {% if library_filter != "Eckles" %}<a href="{% url 'eckles-home' %}">Eckles</a>{% endif %}
     {% if library_filter != "VSTC" %}<a href="{% url 'vstc-home' %}">VSTC</a>{% endif %}
 </h3>
+<div>
+    <span>Last updated on {% now "DATETIME_FORMAT"%}</span>
+</div>
 </div>
 {% endblock content %}
