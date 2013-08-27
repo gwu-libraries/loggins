@@ -17,6 +17,7 @@ class LocationResource(ModelResource):
         filtering = {
             'hostname': ALL,
             'state': ALL,
+            'floor': ALL,
             'building': ALL_WITH_RELATIONS,
             'os': ALL_WITH_RELATIONS,
             'station_name': ALL_WITH_RELATIONS,
