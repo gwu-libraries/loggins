@@ -23,25 +23,29 @@ class Command(BaseCommand):
         for network_prefix in args:
             for i in range(256):
                 ip_address = str(network_prefix) + '.' + str(i)
-                errorIndication, errorStatus, errorIndex, varBindTable = cmdGen.nextCmd(
-                    cmdgen.CommunityData(settings.SNMP_COMMUNITY_STRING),
-                    cmdgen.UdpTransportTarget((ip_address, 161)),
-                    '1.3.6.1.4.1.25071.1.2.6.1.1.2',
-                    '1.3.6.1.4.1.25071.1.1.2.1.1.3',)
 
-                if errorIndication:
-                    print(str(ip_address) + ': ' + str(errorIndication))
-                else:
-                    if errorStatus:
-                        print('%s at %s' % (errorStatus.prettyPrint(),
-                                            errorIndex and varBindTable[-1][int(errorIndex)-1] or '?'))
+                try:
+                    errorIndication, errorStatus, errorIndex, varBindTable = cmdGen.nextCmd(
+                        cmdgen.CommunityData(settings.SNMP_COMMUNITY_STRING),
+                        cmdgen.UdpTransportTarget((ip_address, 161)),
+                        '1.3.6.1.4.1.25071.1.2.6.1.1.2',
+                        '1.3.6.1.4.1.25071.1.1.2.1.1.3',)
+
+                    if errorIndication:
+                        print(str(ip_address) + ': ' + str(errorIndication))
                     else:
-                        hostname = varBindTable[0][0][1]
-                        try:
-                            location = Location.objects.get(hostname__iexact=hostname)
-                            if location.ip_address != ip_address:
-                                location.ip_aadress = ip_address
-                                print 'Updated IP address for host - %s' % location.hostname
-                                location.save()
-                        except ObjectDoesNotExist:
-                            print 'Location with hostname <' + hostname + '> does not exist.'
+                        if errorStatus:
+                            print('%s at %s' % (errorStatus.prettyPrint(),
+                                                errorIndex and varBindTable[-1][int(errorIndex)-1] or '?'))
+                        else:
+                            hostname = varBindTable[0][0][1]
+                            try:
+                                location = Location.objects.get(hostname__iexact=hostname)
+                                if location.ip_address != ip_address:
+                                    location.ip_address = ip_address
+                                    location.save()
+                                    print 'Updated IP address for host - %s' % location.hostname
+                            except ObjectDoesNotExist:
+                                print 'Location with hostname <' + hostname + '> does not exist.'
+                except Exception:
+                    print 'Error while querying - ' + ip_address

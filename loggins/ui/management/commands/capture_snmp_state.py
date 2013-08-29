@@ -15,14 +15,15 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         cmdGen = cmdgen.CommandGenerator()
 
-        locations = Location.objects.all()
+        hostnames = Location.objects.values('hostname')
 
-        for location in locations:
+        for hostname in hostnames:
+            location = Location.objects.get(hostname__iexact=hostname['hostname'])
             errorIndication, errorStatus, errorIndex, varBindTable = cmdGen.nextCmd(
                 cmdgen.CommunityData(settings.SNMP_COMMUNITY_STRING), cmdgen.UdpTransportTarget(
                     (location.ip_address, 161)),
-                    '1.3.6.1.4.1.25071.1.2.6.1.1.2',
-                    '1.3.6.1.4.1.25071.1.1.2.1.1.3',)
+                '1.3.6.1.4.1.25071.1.2.6.1.1.2',
+                '1.3.6.1.4.1.25071.1.1.2.1.1.3',)
             location.observation_time = datetime.utcnow().replace(tzinfo=utc)
 
             if errorIndication:
