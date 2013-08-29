@@ -3,15 +3,16 @@ from django.contrib import admin
 
 from tastypie.api import Api
 
-from ui.api import LocationResource
+from ui.api import LocationResource, SessionResource
 
 admin.autodiscover()
 
-api_1 = Api(api_name='1')
+api_1 = Api(api_name='v1')
 api_1.register(LocationResource())
+api_1.register(SessionResource())
 
 urlpatterns = patterns('',
-    url(r'^api/', include(api_1.urls)), 
+    url(r'^api/', include(api_1.urls)),
     url(r'^admin/', include(admin.site.urls)),
 )
 
