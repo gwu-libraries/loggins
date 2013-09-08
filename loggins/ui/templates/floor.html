@@ -11,6 +11,7 @@
         <tr>
             <th>station</th>
             <th>status</th>
+            <th>operating system</th>
         </tr>
     </thead>
     <tbody>
@@ -18,6 +19,7 @@
         <tr>
             <td><a href="{% url 'location' bldgfloorcode location.station_name %}">{{ location.station_name }}</a></td>
             <td>{{location.state_display}}</td>
+            <td>{{location.os_display}}</td>
         </tr>
         {% endfor %}
     </tbody>
