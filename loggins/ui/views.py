@@ -100,7 +100,7 @@ def floor(request, code):
     #TODO: floorname is not displaying properly for 0th floor
     floorname = temploc.display_floor()
     locations = Location.objects.filter(building=bldgcode, floor=floornum).\
-        order_by('state', 'os').values()
+        order_by('state', 'os', 'station_name').values()
     for l in locations:
         l['state_display'] = Location(state=l['state']).get_state_display()
         l['os_display'] = Location(os=l['os']).get_os_display()
