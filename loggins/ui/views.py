@@ -92,15 +92,18 @@ def location(request, bldgfloorcode, station):
 
 
 def floor(request, code):
-    temploc = Location(building=code[0], floor=code[1])
+    bldgcode = code[0]
+    floornum = code[1]
+    temploc = Location(building=bldgcode, floor=floornum)
     # get building name and floor verbage for this building/floor
     bldgname = temploc.get_building_display()
     #TODO: floorname is not displaying properly for 0th floor
     floorname = temploc.display_floor()
-    locations = Location.objects.filter(building=code[0],
-                                        floor=code[1]).values()
+    locations = Location.objects.filter(building=bldgcode, floor=floornum).\
+        order_by('state', 'os').values()
     for l in locations:
         l['state_display'] = Location(state=l['state']).get_state_display()
+        l['os_display'] = Location(os=l['os']).get_os_display()
     return render(request, 'floor.html', {
         'bldgfloorcode': code,
         'locations': locations,
@@ -130,6 +133,6 @@ def offline(request, library):
         l['state_display'] = Location(state=l['state']).get_state_display()
         l['bldgfloorcode'] = librarycode + str(l['floor'])
     return render(request, 'offline.html', {
-        'locations': locations,
+            'locations': locations,
         'building': bldgname,
     })
