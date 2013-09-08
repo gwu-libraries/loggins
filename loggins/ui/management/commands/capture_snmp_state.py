@@ -15,7 +15,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         cmdGen = cmdgen.CommandGenerator()
 
-        hostnames = Location.objects.values('hostname')
+        hostnames = Location.objects.values('hostname')\
+            .filter(os=Location.WINDOWS7)
 
         for hostname in hostnames:
             location = Location.objects.get(hostname__iexact=hostname['hostname'])
