@@ -38,7 +38,7 @@ class Command(BaseCommand):
                             print('%s at %s' % (errorStatus.prettyPrint(),
                                                 errorIndex and varBindTable[-1][int(errorIndex)-1] or '?'))
                         else:
-                            hostname = varBindTable[0][0][1]
+                            hostname = str(varBindTable[0][0][1])
                             try:
                                 location = Location.objects.get(hostname__iexact=hostname)
                                 if location.ip_address != ip_address:
@@ -47,5 +47,6 @@ class Command(BaseCommand):
                                     print 'Updated IP address for host - %s' % location.hostname
                             except ObjectDoesNotExist:
                                 print 'Location with hostname <' + hostname + '> does not exist.'
-                except Exception:
+                except Exception as e:
                     print 'Error while querying - ' + ip_address
+                    print 'Error message - %s' % str(e.message)
