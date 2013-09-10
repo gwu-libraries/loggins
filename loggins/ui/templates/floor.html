@@ -17,7 +17,7 @@
     <tbody>
         {% for location in locations %}
         <tr>
-            <td><a href="{% url 'location' bldgfloorcode location.station_name %}">{{ location.station_name }}</a></td>
+            <td>{{location.station_name}}</a></td>
             <td>{{location.state_display}}</td>
             <td>{{location.os_display}}</td>
         </tr>
