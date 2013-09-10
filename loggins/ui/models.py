@@ -61,9 +61,9 @@ class Location(models.Model):
         if self.floor == 0:
             return 'Lower Level'
         elif self.building == 'g' and self.floor == 2:
-            return 'Entrance Floor'
+            return 'Entrance'
         else:
-            return '%s floor' % humanize.ordinal(self.floor)
+            return '%s' % humanize.ordinal(self.floor)
 
 
 class Session(models.Model):

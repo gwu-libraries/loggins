@@ -4,22 +4,22 @@
 
 {% block content %}
 <div class='span12'>
-<h1>{{library_filter}} library workstations</h1>
+<h1>{{library_filter}} library workstations available</h1>
 {% if buildingfloors %}
 <table class='table'>
     <thead>
         <tr>
             <th>Location</th>
-            <th>Windows Workstations</th>
-            <th>Mac Workstations</th>
+            <th>Windows</th>
+            <th>Mac</th>
         </tr>
     </thead>
     <tbody>
         {% for buildingfloor in buildingfloors %}
         <tr>
             <td><a href="{% url 'floor' buildingfloor.buildingfloorcode %}">{{ buildingfloor.building_display}}, {{buildingfloor.floor_display }}</a></td>
-            <td>{% if buildingfloor.num_total_win > 0 %}{{buildingfloor.num_available_win}} of {{buildingfloor.num_total_win}} available{% endif %}</td>
-            <td>{% if buildingfloor.num_total_mac > 0 %}{{buildingfloor.num_available_mac}} of {{buildingfloor.num_total_mac}} available{% endif %}</td>
+            <td>{% if buildingfloor.num_total_win > 0 %}{{buildingfloor.num_available_win}} of {{buildingfloor.num_total_win}}{% endif %}</td>
+            <td>{% if buildingfloor.num_total_mac > 0 %}{{buildingfloor.num_available_mac}} of {{buildingfloor.num_total_mac}}{% endif %}</td>
         </tr>
         {% endfor %}
     </tbody>
