@@ -43,14 +43,14 @@
     </tbody>
 </table>
 {% endif %}
-<h3>
+<div>
+    <span>Last updated on {% now "DATETIME_FORMAT"%}</span>
+</div>
+<h4>Show: 
 {% if library_filter != "All" %}<a href="{% url 'home' %}">All</a>{% endif %}
     {% if library_filter != "Gelman" %}<a href="{% url 'gelman-home' %}">Gelman</a>{% endif %}
     {% if library_filter != "Eckles" %}<a href="{% url 'eckles-home' %}">Eckles</a>{% endif %}
     {% if library_filter != "VSTC" %}<a href="{% url 'vstc-home' %}">VSTC</a>{% endif %}
-</h3>
-<div>
-    <span>Last updated on {% now "DATETIME_FORMAT"%}</span>
-</div>
+</h4>
 </div>
 {% endblock content %}
