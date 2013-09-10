@@ -18,8 +18,8 @@
         {% for buildingfloor in buildingfloors %}
         <tr>
             <td><a href="{% url 'floor' buildingfloor.buildingfloorcode %}">{{ buildingfloor.building_display}}, {{buildingfloor.floor_display }}</a></td>
-            <td>{{buildingfloor.num_available_win}} of {{buildingfloor.num_total_win}} available</td>
-            <td>{{buildingfloor.num_available_mac}} of {{buildingfloor.num_total_mac}} available</td>
+            <td>{% if buildingfloor.num_total_win > 0 %}{{buildingfloor.num_available_win}} of {{buildingfloor.num_total_win}} available{% endif %}</td>
+            <td>{% if buildingfloor.num_total_mac > 0 %}{{buildingfloor.num_available_mac}} of {{buildingfloor.num_total_mac}} available{% endif %}</td>
         </tr>
         {% endfor %}
     </tbody>
