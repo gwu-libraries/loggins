@@ -144,13 +144,15 @@ $ sudo /etc/init.d/apache2 reload
 you should be up and running. to test it out, use curl:
 ```
 curl script to record a login event
-$ curl -i -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: ApiKey <YOURUSERNAME>:<YOURAPIKEY>" -X POST -d "{\"state\":"\i\",\"observation_time\":\"$(date +%Y-%m-%dT%H:%M:%S)\"}" http://<YOUR.SERVER.NAME>:<PORT>/api/v1/location/<HOSTNAME>/
+$ curl -i -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: ApiKey <YOURUSERNAME>:<YOURAPIKEY>" -X PUT -d "{\"ip_address\":\"<IPADDRESS>\",\"state\":\"i\",\"observation_time\":\"$(date +%Y-%m-%dT%H:%M:%S)\"}" http://<YOUR.SERVER.NAME>:<PORT>/api/v1/location/<HOSTNAME>/
 ```
 ```
 curl script to record a logout event
-$ curl -i -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: ApiKey <YOURUSERNAME>:<YOURAPIKEY>" -X POST -d "{\"state\":"\a\",\"observation_time\":\"$(date +%Y-%m-%dT%H:%M:%S)\"}" http://<YOUR.SERVER.NAME>:<PORT>/api/v1/location/<HOSTNAME>/
+$ curl -i -H "Content-Type: application/json" -H "Accept: application/json" -H "Authorization: ApiKey <YOURUSERNAME>:<YOURAPIKEY>" -X PUT -d "{\"ip_address\":\"<IPADDRESS>\",\"state\":\"a\",\"observation_time\":\"$(date +%Y-%m-%dT%H:%M:%S)\"}" http://<YOUR.SERVER.NAME>:<PORT>/api/v1/location/<HOSTNAME>/
 ```
 
+Additional Location attributes that can be updated using the API are,
+```"building", "floor", "hostname", "os", and "station_name"```
 to create user/accounts/api keys, go to the django admin site at 
 ```/admin```, and under ```Users``` create new users as needed. new
 api keys are generated when you create new accounts.  the generated
