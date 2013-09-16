@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import get_object_or_404, render
-from ui.models import Location, Session
+from ui.models import Location
 
 
 def _paginate(request, paginator):
@@ -61,6 +61,7 @@ def home(request, library):
         library_filter = 'All'
 
     return render(request, 'home.html', {
+        'title': 'GW Libraries Computers: Workstations Available',
         'buildingfloors': buildingfloors,
         'library_filter': library_filter,
     })
@@ -77,6 +78,7 @@ def location(request, bldgfloorcode, station):
     bldgname = temploc.get_building_display()
     floorname = temploc.display_floor()
     return render(request, 'location.html', {
+        'title': 'GW Libraries Computers: Station %s' % station,
         'bldgname': bldgname,
         'floorname': floorname,
         'building': bldgfloorcode[0],
@@ -90,7 +92,7 @@ def location(request, bldgfloorcode, station):
 
 def floor(request, code):
     bldgcode = code[0]
-    floornum = code[1]
+    floornum = int(code[1])
     temploc = Location(building=bldgcode, floor=floornum)
     # get building name and floor verbage for this building/floor
     bldgname = temploc.get_building_display()
@@ -101,6 +103,7 @@ def floor(request, code):
         l['state_display'] = Location(state=l['state']).get_state_display()
         l['os_display'] = Location(os=l['os']).get_os_display()
     return render(request, 'floor.html', {
+        'title': 'GW Libraries Computers: %s %s' % (bldgname, floorname),
         'bldgfloorcode': code,
         'locations': locations,
         'building': bldgname,
@@ -117,8 +120,8 @@ def offline(request, library):
 
     locations = Location.objects.filter(building=librarycode,
                                         state=Location.NO_RESPONSE).\
-        order_by('floor').values()
-    temploc = Location(building=librarycode, floor=0)
+        order_by('floor', 'last_offline_start_time').values()
+    temploc = Location(building=librarycode)
     # get building name and floor verbage for this building/floor
     bldgname = temploc.get_building_display()
     for l in locations:
@@ -128,7 +131,9 @@ def offline(request, library):
         l['state_display'] = Location(state=l['state']).get_state_display()
         l['bldgfloorcode'] = l['building'] + str(l['floor'])
         l['offlinesince'] = l['last_offline_start_time']
+
     return render(request, 'offline.html', {
+        'title': 'GW Libraries Computers: Offline Workstations',
         'locations': locations,
         'building': bldgname,
     })
