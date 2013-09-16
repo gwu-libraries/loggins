@@ -24,7 +24,6 @@ class LocationResource(ModelResource):
             'os': ALL_WITH_RELATIONS,
             'station_name': ALL_WITH_RELATIONS,
             'ip_address': 'exact',
-            'floor': ALL_WITH_RELATIONS,
         }
 
     def prepend_urls(self):
