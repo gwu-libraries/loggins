@@ -27,10 +27,10 @@ urlpatterns += patterns('ui.views',
     url(r'^(?i)eckles/$', 'home', {'library': 'eckles'}, name='eckles-home'),
     url(r'^(?i)vstc/$', 'home', {'library': 'vstc'}, name='vstc-home'),
     # example:  location/g2/PC101   for PC101 on Gelman 2nd floor
-    url(r'^location/(?P<bldgfloorcode>[a-z][0-9])/(?P<station>[0-9|a-z|A-Z]-[0-9]+)/$',
+    url(r'^location/(?P<bldgfloorcode>[a-z|A-Z][0-9])/(?P<station>[0-9|a-z|A-Z]-[L|l|0-9]+)/$',
         'location', name='location'),
     # code should be something like 'g2' for Gelman 2nd floor
-    url(r'^floor/(?P<code>[a-z][0-9])/$', 'floor', name='floor'),
+    url(r'^floor/(?P<code>[a-z|A-Z][0-9])/$', 'floor', name='floor'),
     # offline carrels
     url(r'^(?i)gelman/offline$', 'offline', {'library': 'gelman'}, name='gelman-offline'),
     url(r'^(?i)eckles/offline$', 'offline', {'library': 'eckles'}, name='eckles-offline'),

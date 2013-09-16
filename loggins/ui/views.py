@@ -68,12 +68,11 @@ def home(request, library):
 
 
 def location(request, bldgfloorcode, station):
-    # TODO make station match non-case-sensitive
-    l = Location.objects.filter(building=bldgfloorcode[0],
-                                floor=bldgfloorcode[1],
-                                station_name=station)
+    l = Location.objects.filter(building=bldgfloorcode[0].lower(),
+                                floor=int(bldgfloorcode[1]),
+                                station_name__iexact=station)
     # TODO: Need to gracefully handle consition where len(l) = 0
-    temploc = Location(building=bldgfloorcode[0], floor=bldgfloorcode[1])
+    temploc = Location(building=bldgfloorcode[0].lower(), floor=bldgfloorcode[1])
     # get building name and floor verbage for this building/floor
     bldgname = temploc.get_building_display()
     floorname = temploc.display_floor()
@@ -91,7 +90,7 @@ def location(request, bldgfloorcode, station):
 
 
 def floor(request, code):
-    bldgcode = code[0]
+    bldgcode = code[0].lower()
     floornum = int(code[1])
     temploc = Location(building=bldgcode, floor=floornum)
     # get building name and floor verbage for this building/floor
