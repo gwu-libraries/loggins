@@ -81,7 +81,6 @@ def location(request, bldgfloorcode, station):
         'floorname': floorname,
         'building': bldgfloorcode[0],
         'location': l.values()[0],
-        'building': bldgfloorcode[0],
         'floor': bldgfloorcode[1],
         'sessions': {},
         'paginator': {},
