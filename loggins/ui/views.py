@@ -1,7 +1,5 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db import connection
 from django.shortcuts import get_object_or_404, render
-
 from ui.models import Location, Session
 
 
@@ -68,20 +66,20 @@ def home(request, library):
     })
 
 
-
 def location(request, bldgfloorcode, station):
     # TODO make station match non-case-sensitive
     l = Location.objects.filter(building=bldgfloorcode[0],
                                 floor=bldgfloorcode[1],
                                 station_name=station)
-    if len(l) == 0:
-        # TODO: need to handle this condition
-        x = 0
+    # TODO: Need to gracefully handle consition where len(l) = 0
     temploc = Location(building=bldgfloorcode[0], floor=bldgfloorcode[1])
     # get building name and floor verbage for this building/floor
     bldgname = temploc.get_building_display()
     floorname = temploc.display_floor()
     return render(request, 'location.html', {
+        'bldgname': bldgname,
+        'floorname': floorname,
+        'building': bldgfloorcode[0],
         'location': l.values()[0],
         'building': bldgfloorcode[0],
         'floor': bldgfloorcode[1],
@@ -97,7 +95,6 @@ def floor(request, code):
     temploc = Location(building=bldgcode, floor=floornum)
     # get building name and floor verbage for this building/floor
     bldgname = temploc.get_building_display()
-    #TODO: floorname is not displaying properly for 0th floor
     floorname = temploc.display_floor()
     locations = Location.objects.filter(building=bldgcode, floor=floornum).\
         order_by('state', 'os', 'station_name').values()
@@ -121,18 +118,18 @@ def offline(request, library):
 
     locations = Location.objects.filter(building=librarycode,
                                         state=Location.NO_RESPONSE).\
-        order_by('building', 'floor').values()
+        order_by('floor').values()
     temploc = Location(building=librarycode, floor=0)
     # get building name and floor verbage for this building/floor
     bldgname = temploc.get_building_display()
-    #TODO: floorname is not displaying properly for 0th floor
     for l in locations:
-        temploc = Location(building=librarycode, floor=l['floor'])
+        temploc = Location(building=l['building'], floor=l['floor'])
         floorname = temploc.display_floor()
         l['floorname'] = floorname
         l['state_display'] = Location(state=l['state']).get_state_display()
-        l['bldgfloorcode'] = librarycode + str(l['floor'])
+        l['bldgfloorcode'] = l['building'] + str(l['floor'])
+        l['offlinesince'] = l['last_offline_start_time']
     return render(request, 'offline.html', {
-            'locations': locations,
+        'locations': locations,
         'building': bldgname,
     })
