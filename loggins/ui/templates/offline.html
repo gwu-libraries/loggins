@@ -5,23 +5,23 @@
 {% block content %}
 <div class='span12'>
 {% if locations %}
-<h1>offline workstations in {{building}}</h1>
+<h1>Offline workstations in {{building}}</h1>
 <table class='table'>
     <thead>
         <tr>
-            <th>floor</th>
-            <th>station</th>
-            <th>os</th>
-            <th>status</th>
+            <th>Floor</th>
+            <th>Station</th>
+            <th>Operating System</th>
+            <th>Offline Since</th>
         </tr>
     </thead>
     <tbody>
         {% for location in locations %}
         <tr>
             <td>{{location.floorname}}</td>
-            <td><a href="{% url 'location' location.bldgfloorcode location.station_name %}">{{ location.station_name }}</a></td>
+            <td>{{location.station_name}}</a></td>
             <td>{{location.os}}</td>
-            <td>{{location.state_display}}</td>
+            <td>{{location.offlinesince}}</td>
         </tr>
         {% endfor %}
     </tbody>

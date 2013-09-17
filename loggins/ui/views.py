@@ -1,8 +1,6 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db import connection
 from django.shortcuts import get_object_or_404, render
-
-from ui.models import Location, Session
+from ui.models import Location
 
 
 def _paginate(request, paginator):
@@ -63,27 +61,27 @@ def home(request, library):
         library_filter = 'All'
 
     return render(request, 'home.html', {
+        'title': 'GW Libraries Computers: Workstations Available',
         'buildingfloors': buildingfloors,
         'library_filter': library_filter,
     })
 
 
-
 def location(request, bldgfloorcode, station):
-    # TODO make station match non-case-sensitive
-    l = Location.objects.filter(building=bldgfloorcode[0],
-                                floor=bldgfloorcode[1],
-                                station_name=station)
-    if len(l) == 0:
-        # TODO: need to handle this condition
-        x = 0
-    temploc = Location(building=bldgfloorcode[0], floor=bldgfloorcode[1])
+    l = Location.objects.filter(building=bldgfloorcode[0].lower(),
+                                floor=int(bldgfloorcode[1]),
+                                station_name__iexact=station)
+    # TODO: Need to gracefully handle consition where len(l) = 0
+    temploc = Location(building=bldgfloorcode[0].lower(), floor=bldgfloorcode[1])
     # get building name and floor verbage for this building/floor
     bldgname = temploc.get_building_display()
     floorname = temploc.display_floor()
     return render(request, 'location.html', {
-        'location': l.values()[0],
+        'title': 'GW Libraries Computers: Station %s' % station,
+        'bldgname': bldgname,
+        'floorname': floorname,
         'building': bldgfloorcode[0],
+        'location': l.values()[0],
         'floor': bldgfloorcode[1],
         'sessions': {},
         'paginator': {},
@@ -92,12 +90,11 @@ def location(request, bldgfloorcode, station):
 
 
 def floor(request, code):
-    bldgcode = code[0]
-    floornum = code[1]
+    bldgcode = code[0].lower()
+    floornum = int(code[1])
     temploc = Location(building=bldgcode, floor=floornum)
     # get building name and floor verbage for this building/floor
     bldgname = temploc.get_building_display()
-    #TODO: floorname is not displaying properly for 0th floor
     floorname = temploc.display_floor()
     locations = Location.objects.filter(building=bldgcode, floor=floornum).\
         order_by('state', 'os', 'station_name').values()
@@ -105,6 +102,7 @@ def floor(request, code):
         l['state_display'] = Location(state=l['state']).get_state_display()
         l['os_display'] = Location(os=l['os']).get_os_display()
     return render(request, 'floor.html', {
+        'title': 'GW Libraries Computers: %s %s' % (bldgname, floorname),
         'bldgfloorcode': code,
         'locations': locations,
         'building': bldgname,
@@ -121,18 +119,20 @@ def offline(request, library):
 
     locations = Location.objects.filter(building=librarycode,
                                         state=Location.NO_RESPONSE).\
-        order_by('building', 'floor').values()
-    temploc = Location(building=librarycode, floor=0)
+        order_by('floor', 'last_offline_start_time').values()
+    temploc = Location(building=librarycode)
     # get building name and floor verbage for this building/floor
     bldgname = temploc.get_building_display()
-    #TODO: floorname is not displaying properly for 0th floor
     for l in locations:
-        temploc = Location(building=librarycode, floor=l['floor'])
+        temploc = Location(building=l['building'], floor=l['floor'])
         floorname = temploc.display_floor()
         l['floorname'] = floorname
         l['state_display'] = Location(state=l['state']).get_state_display()
-        l['bldgfloorcode'] = librarycode + str(l['floor'])
+        l['bldgfloorcode'] = l['building'] + str(l['floor'])
+        l['offlinesince'] = l['last_offline_start_time']
+
     return render(request, 'offline.html', {
-            'locations': locations,
+        'title': 'GW Libraries Computers: Offline Workstations',
+        'locations': locations,
         'building': bldgname,
     })
