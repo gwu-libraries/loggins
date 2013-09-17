@@ -128,6 +128,7 @@ def offline(request, library):
         floorname = temploc.display_floor()
         l['floorname'] = floorname
         l['state_display'] = Location(state=l['state']).get_state_display()
+        l['os_display'] = Location(os=l['os']).get_os_display()
         l['bldgfloorcode'] = l['building'] + str(l['floor'])
         l['offlinesince'] = l['last_offline_start_time']
 
