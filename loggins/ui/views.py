@@ -60,8 +60,13 @@ def home(request, library):
     else:
         library_filter = 'All'
 
+    if library_filter != 'All':
+        library_title = " (" + library_filter + ") "
+    else:
+        library_title = ""
+
     return render(request, 'home.html', {
-        'title': 'Computers Available - GW Libraries',
+        'title': 'Computers Available %s - GW Libraries' % library_title,
         'buildingfloors': buildingfloors,
         'library_filter': library_filter,
     })
