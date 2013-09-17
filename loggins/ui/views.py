@@ -61,7 +61,7 @@ def home(request, library):
         library_filter = 'All'
 
     return render(request, 'home.html', {
-        'title': 'GW Libraries Computers: Workstations Available',
+        'title': 'Computers Available - GW Libraries',
         'buildingfloors': buildingfloors,
         'library_filter': library_filter,
     })
@@ -77,7 +77,7 @@ def location(request, bldgfloorcode, station):
     bldgname = temploc.get_building_display()
     floorname = temploc.display_floor()
     return render(request, 'location.html', {
-        'title': 'GW Libraries Computers: Station %s' % station,
+        'title': 'Station %s - GW Libraries' % station,
         'bldgname': bldgname,
         'floorname': floorname,
         'building': bldgfloorcode[0],
@@ -102,7 +102,7 @@ def floor(request, code):
         l['state_display'] = Location(state=l['state']).get_state_display()
         l['os_display'] = Location(os=l['os']).get_os_display()
     return render(request, 'floor.html', {
-        'title': 'GW Libraries Computers: %s %s' % (bldgname, floorname),
+        'title': 'Computers Available: %s %s - GW Libraries' % (bldgname, floorname),
         'bldgfloorcode': code,
         'locations': locations,
         'building': bldgname,
@@ -133,7 +133,7 @@ def offline(request, library):
         l['offlinesince'] = l['last_offline_start_time']
 
     return render(request, 'offline.html', {
-        'title': 'GW Libraries Computers: Offline Workstations',
+        'title': 'Computers Offline - GW Libraries',
         'locations': locations,
         'building': bldgname,
     })
