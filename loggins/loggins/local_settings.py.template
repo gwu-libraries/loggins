@@ -1,3 +1,5 @@
+import os
+
 DEBUG = True
 
 ADMINS = (
@@ -20,3 +22,12 @@ DATABASES = {
 SNMP_COMMUNITY_STRING = ''
 ALLOWED_HOSTS = ['']
 TASTYPIE_DEFAULT_FORMATS = ['json']
+
+# Show sitemaps in robots.txt?
+ENABLE_SITEMAPS = False
+
+# Relative path of sitemap files on local disk
+SITEMAPS_DIR = os.path.join(os.path.dirname(__file__), '../ui/static/sitemaps')
+
+# Base public URL of links; used by sitemap generator, no trailing slash
+SITEMAPS_BASE_URL = 'http://computers.library.gwu.edu'

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import get_object_or_404, render
 from ui.models import Location
@@ -142,3 +143,10 @@ def offline(request, library):
         'locations': locations,
         'building': bldgname,
     })
+
+
+def robots(request):
+    return render(request, 'robots.txt', {
+        'enable_sitemaps': settings.ENABLE_SITEMAPS,
+        'sitemaps_base_url': settings.SITEMAPS_BASE_URL,
+    }, content_type='text/plain')

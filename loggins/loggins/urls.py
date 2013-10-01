@@ -35,4 +35,5 @@ urlpatterns += patterns('ui.views',
     url(r'^(?i)gelman/offline$', 'offline', {'library': 'gelman'}, name='gelman-offline'),
     url(r'^(?i)eckles/offline$', 'offline', {'library': 'eckles'}, name='eckles-offline'),
     url(r'^(?i)vstc/offline$', 'offline', {'library': 'vstc'}, name='vstc-offline'),
+    url(r'^robots.txt$', 'robots', name='robots'),
 )
