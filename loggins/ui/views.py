@@ -146,7 +146,4 @@ def offline(request, library):
 
 
 def robots(request):
-    return render(request, 'robots.txt', {
-        'enable_sitemaps': settings.ENABLE_SITEMAPS,
-        'sitemaps_base_url': settings.SITEMAPS_BASE_URL,
-    }, content_type='text/plain')
+    return render(request, 'robots.txt', content_type='text/plain')

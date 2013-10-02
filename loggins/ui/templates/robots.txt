@@ -1,11 +1,2 @@
-{% if enable_sitemaps %}
-# Hi robots! Please follow our sitemaps. Thanks!
-{% else %}
-# Hi robots! Sitemaps are intentionally not enabled. Sorry :( !
-{% endif %}
-
-User-agent: *{% if enable_sitemaps %}
-Sitemap: {{ sitemaps_base_url }}/sitemap-index.xml
-{% else %}
+User-agent: *
 Disallow: /
-{% endif %}
