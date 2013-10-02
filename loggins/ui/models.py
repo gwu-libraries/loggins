@@ -39,10 +39,10 @@ class Location(models.Model):
     building = models.CharField(db_index=True, max_length=2,
                                 choices=BUILDINGS, default='')
     floor = models.PositiveSmallIntegerField()
-    # station name/number may not be unique across floors/buildings
+    # station name/number does not have to be unique across floors/buildings
     station_name = models.CharField(max_length=50, db_index=True)
     hostname = models.CharField(max_length=50, db_index=True)
-    ip_address = models.IPAddressField(db_index=True)
+    ip_address = models.GenericIPAddressField(db_index=True, blank=True, null=True)
     os = models.CharField(db_index=True, max_length=4, choices=OS_TYPES,
                           default='', blank=True)
     state = models.CharField(db_index=True, max_length=2,
