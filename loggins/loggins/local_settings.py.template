@@ -20,3 +20,6 @@ DATABASES = {
 SNMP_COMMUNITY_STRING = ''
 ALLOWED_HOSTS = ['']
 TASTYPIE_DEFAULT_FORMATS = ['json']
+
+# If this value is present (not empty), GA bug will be added to html
+GOOGLE_ANALYTICS_UA = ''
