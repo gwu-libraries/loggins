@@ -1,1 +1,32 @@
-whoops! couldn't find that.
+{% extends "base.html" %}
+{% load url from future %}
+{% load humanize %}
+
+{% block content %}
+<h2>We couldn't find the page you were looking for.</h2>
+<p>If you're looking to view a particular library's computers, try:
+<ul>
+    <li><a href="{% url 'home' %}/gelman/">{% url 'home' %}gelman/</a>
+    <li><a href="{% url 'home' %}/eckles/">{% url 'home' %}eckles/</a>
+    <li><a href="{% url 'home' %}/vstc/">{% url 'home' %}vstc/</a>
+</ul>
+<p>If you're looking to view which computers are offline, try:
+<ul>
+    <li><a href="{% url 'home' %}/gelman/offline">{% url 'home' %}gelman/offline</a>
+    <li><a href="{% url 'home' %}/eckles/offline">{% url 'home' %}eckles/offline</a>
+    <li><a href="{% url 'home' %}/vstc/offline">{% url 'home' %}vstc/offline</a>
+</ul>
+<p>If you're trying to view a particular floor, try:
+<ul>
+    <li><a href="{% url 'home' %}/floor/g1">{% url 'home' %}floor/g1</a> (to view locations on Gelman, floor 1)
+</ul>
+<p>If you're trying to view statistics on a particular location, try:
+<ul>
+    <li><a href="{% url 'home' %}/location/g3/3-005">{% url 'home' %}location/g3/3-005</a> (to view location 3-101 on Gelman, 3rd floor)
+</ul>
+<p>If you're trying to use the API:
+<ul>
+    <li><a href="{% url 'home' %}/api/">{% url 'home' %}api/</a>
+</ul>
+
+{% endblock content %}
