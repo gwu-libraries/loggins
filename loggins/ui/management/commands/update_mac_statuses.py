@@ -1,10 +1,8 @@
-from datetime import datetime
-
 from django.core.management.base import BaseCommand
 
 from ui.models import Location
 
-import subprocess
+import os
 
 
 class Command(BaseCommand):
@@ -12,13 +10,29 @@ class Command(BaseCommand):
             their status if they are online/offline'
 
     def handle(self, *args, **options):
-
-        hostnames = Location.objects.values('hostname').filter(os=Location.WINDOWS7)
+        hostnames = Location.objects.values('hostname')\
+            .filter(os=Location.MACOSX)
 
         for hostname in hostnames:
-            location = Location.objects.get(hostname__iexact=hostname['hostname'])
+            location = Location.objects.get(
+                hostname__iexact=hostname['hostname'])
 
-            process = subprocess.Popen('ping ' + str(location.ip_address), stdout=subprocess.PIPE)
+            try:
+                response = os.system('ping -c 1 ' + location.ip_address)
+                if response == 0:
+                    if location.state != location.LOGGED_IN:
+                        location.state = Location.AVAILABLE
+                        print 'Location with hostname <' + location.hostname \
+                            + '> and ip address <' + location.ip_address \
+                            + '> is available'
+                else:
+                    location.state = Location.NO_RESPONSE
+                    print 'Location with hostname <' + location.hostname \
+                        + '> and ip address <' + location.ip_address \
+                        + '> is offline'
+            except Exception as e:
+                print 'Error while pinging Location with hostname <' \
+                    + location.hostname + '> and ip address <' \
+                    + location.ip_address + '>: ' + str(e)
 
-            print 'Process return code: ' + process.returncode
-            print 'Ping output: ' + process.stdout.read()
+            location.save()
