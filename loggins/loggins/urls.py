@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from django.views.generic import TemplateView
 
 from tastypie.api import Api
 
@@ -14,6 +15,8 @@ api_1.register(SessionResource())
 urlpatterns = patterns('',
     url(r'^api/', include(api_1.urls)),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^robots.txt$', TemplateView.as_view(template_name='robots.txt'),
+        name='robots.txt'),
 )
 
 urlpatterns += patterns('ui.views',
