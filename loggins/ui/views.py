@@ -1,6 +1,6 @@
 from django.conf import settings
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import get_object_or_404, render
+from django.core.paginator import EmptyPage, PageNotAnInteger
+from django.shortcuts import render
 from ui.models import Location
 
 
@@ -70,6 +70,7 @@ def home(request, library):
         'title': 'Computers Available %s - GW Libraries' % library_title,
         'buildingfloors': buildingfloors,
         'library_filter': library_filter,
+        'google_analytics_ua': settings.GOOGLE_ANALYTICS_UA,
     })
 
 
@@ -78,7 +79,8 @@ def location(request, bldgfloorcode, station):
                                 floor=int(bldgfloorcode[1]),
                                 station_name__iexact=station)
     # TODO: Need to gracefully handle consition where len(l) = 0
-    temploc = Location(building=bldgfloorcode[0].lower(), floor=bldgfloorcode[1])
+    temploc = Location(building=bldgfloorcode[0].lower(),
+                       floor=bldgfloorcode[1])
     # get building name and floor verbage for this building/floor
     bldgname = temploc.get_building_display()
     floorname = temploc.display_floor()
@@ -92,6 +94,7 @@ def location(request, bldgfloorcode, station):
         'sessions': {},
         'paginator': {},
         'page': {},
+        'google_analytics_ua': settings.GOOGLE_ANALYTICS_UA,
     })
 
 
@@ -108,11 +111,13 @@ def floor(request, code):
         l['state_display'] = Location(state=l['state']).get_state_display()
         l['os_display'] = Location(os=l['os']).get_os_display()
     return render(request, 'floor.html', {
-        'title': 'Computers Available: %s %s - GW Libraries' % (bldgname, floorname),
+        'title': 'Computers Available: %s %s - GW Libraries' % (bldgname,
+                                                                floorname),
         'bldgfloorcode': code,
         'locations': locations,
         'building': bldgname,
         'floorname': floorname,
+        'google_analytics_ua': settings.GOOGLE_ANALYTICS_UA,
     })
 
 
@@ -142,6 +147,7 @@ def offline(request, library):
         'title': 'Computers Offline - GW Libraries',
         'locations': locations,
         'building': bldgname,
+        'google_analytics_ua': settings.GOOGLE_ANALYTICS_UA,
     })
 
 
