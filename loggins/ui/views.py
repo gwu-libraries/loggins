@@ -149,7 +149,3 @@ def offline(request, library):
         'building': bldgname,
         'google_analytics_ua': settings.GOOGLE_ANALYTICS_UA,
     })
-
-
-def robots(request):
-    return render(request, 'robots.txt', content_type='text/plain')
