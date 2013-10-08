@@ -1,3 +1,4 @@
+from tastypie import fields
 from tastypie.authentication import ApiKeyAuthentication, MultiAuthentication,\
     Authentication
 from tastypie.authorization import DjangoAuthorization
@@ -33,6 +34,8 @@ class LocationResource(ModelResource):
 
 
 class SessionResource(ModelResource):
+    location = fields.ForeignKey(LocationResource, 'location')
+
     class Meta:
         queryset = Session.objects.all()
         resource_name = 'session'
@@ -40,6 +43,8 @@ class SessionResource(ModelResource):
                                              Authentication())
         authorization = DjangoAuthorization()
         filtering = {
-            'location': ALL,
+            'location': ALL_WITH_RELATIONS,
             'session_type': ALL,
+            'timestamp_start': ALL,
+            'timestamp_end': ALL,
         }
