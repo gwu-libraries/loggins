@@ -10,7 +10,7 @@ from pysnmp.entity.rfc3413.oneliner import cmdgen
 
 
 class Command(BaseCommand):
-    help = 'Record current SNMP state of all the machines registered in the system'
+    help = 'Record current SNMP state of all the VDI machines registered in the system'
 
     def handle(self, *args, **options):
         cmdGen = cmdgen.CommandGenerator()
