@@ -171,3 +171,24 @@ this will add a new record every five seconds:
 ```
 $ ./manage.py login_monkey --interval 5 --verbose
 ```
+
+script deployment
+-----------------
+
+To set up live status updates from the computers on the network,
+the scripts in the /scripts folder must be deployed as follows:
+
+- ```map_network_hosts.sh``` should be run as a cron job, with a recommended interval of 1 day.
+- ```capture_snmp_state.sh``` should be run as a cron job, at the
+interval desired for state updates (e.g. 30 seconds)
+- ```update_mac_statuses.sh``` should be run as a cron job, at the
+interval desired for state updates (e.g. 30 seconds)
+- ```mac_loggins-login.sh``` should be deployed to each Mac workstation
+as a shell script to run upon logging in
+- ```mac_loggins-logout.sh``` should be deployed to each Mac workstation
+as a shell script to run upon logging out
+
+Note that the scripts must be edited to configure values for LOGGINS_PATH_TO_ENV,
+LOGGINS_PROJECT_DIR, NETWORK_PREFIXES, API_KEY, API_USERNAME, API_URL
+
+
