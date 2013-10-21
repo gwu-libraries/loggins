@@ -3,7 +3,7 @@
 {% load humanize %}
 
 {% block content %}
-<div class='span12'>
+<div class='span12' style="{% if fixedwidth != "" %}width:{{fixedwidth}}px{% endif %}">
     <h1>{% if library_filter == "All" %}
         Library
         {% else %}
@@ -11,7 +11,7 @@
         {% endif %}
         workstations available</h1>
 {% if buildingfloors %}
-<table class='table'>
+<table class='table' style="{% if fixedwidth != "" %}width:{{fixedwidth}}px{% endif %}">
     <thead>
         <tr>
             <th>Floor</th>
@@ -57,7 +57,7 @@
 {% if library_filter != "VSTC" %}<a href="{% url 'vstc-home' %}">VSTC</a>{% endif %}
 </h4>
 <h4>
-<div>
+<div style="{% if fixedwidth != "" %}width:{{fixedwidth}}px{% endif %}">
     <span><a href="http://library.gwu.edu/services/computers-wireless/library-computers">About GW Libraries Computers</a></span>
     <span style="float:right;">Last updated on {% now "DATETIME_FORMAT"%}</span>
 </div>

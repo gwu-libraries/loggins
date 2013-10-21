@@ -23,3 +23,6 @@ TASTYPIE_DEFAULT_FORMATS = ['json']
 
 # If this value is present (not empty), GA bug will be added to html
 GOOGLE_ANALYTICS_UA = ''
+
+# width of public digital display area, in pixels
+SIGN_WIDTH = '400'

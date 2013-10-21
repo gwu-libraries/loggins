@@ -15,7 +15,7 @@ def _paginate(request, paginator):
     return page, items
 
 
-def home(request, library):
+def home(request, library, fixedwidth=''):
     locations = Location.objects
     # create an iterable with one item per unique building/floor combo
     buildingfloors = locations.values('building', 'floor').distinct(
@@ -71,6 +71,7 @@ def home(request, library):
         'buildingfloors': buildingfloors,
         'library_filter': library_filter,
         'google_analytics_ua': settings.GOOGLE_ANALYTICS_UA,
+        'fixedwidth': fixedwidth,
     })
 
 
