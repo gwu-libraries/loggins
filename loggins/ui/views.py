@@ -71,7 +71,7 @@ def home(request, library, width=0):
         'buildingfloors': buildingfloors,
         'library_filter': library_filter,
         'google_analytics_ua': settings.GOOGLE_ANALYTICS_UA,
-        'fixedwidth': width,
+        'fixedwidth': int(width),
     })
 
 
