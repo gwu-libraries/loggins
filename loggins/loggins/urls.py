@@ -38,4 +38,7 @@ urlpatterns += patterns('ui.views',
     url(r'^(?i)gelman/offline$', 'offline', {'library': 'gelman'}, name='gelman-offline'),
     url(r'^(?i)eckles/offline$', 'offline', {'library': 'eckles'}, name='eckles-offline'),
     url(r'^(?i)vstc/offline$', 'offline', {'library': 'vstc'}, name='vstc-offline'),
+    url(r'^(?i)gelman/sign/(?P<width>[0-9]+)[/?]$', 'home', {'library': 'gelman'}, name='gelman-sign'),
+    url(r'^(?i)eckles/sign/(?P<width>[0-9]+)[/?]$', 'home', {'library': 'eckles'}, name='eckles-sign'),
+    url(r'^(?i)vstc/sign/(?P<width>[0-9]+)[/?]$', 'home', {'library': 'vstc'}, name='vstc-sign'),
 )
