@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.views.generic import TemplateView
@@ -39,7 +38,7 @@ urlpatterns += patterns('ui.views',
     url(r'^(?i)gelman/offline$', 'offline', {'library': 'gelman'}, name='gelman-offline'),
     url(r'^(?i)eckles/offline$', 'offline', {'library': 'eckles'}, name='eckles-offline'),
     url(r'^(?i)vstc/offline$', 'offline', {'library': 'vstc'}, name='vstc-offline'),
-    url(r'^(?i)gelman/sign$', 'home', {'library': 'gelman', 'fixedwidth': settings.SIGN_WIDTH}, name='gelman-sign'),
-    url(r'^(?i)eckles/sign$', 'home', {'library': 'eckles', 'fixedwidth': settings.SIGN_WIDTH}, name='eckles-sign'),
-    url(r'^(?i)vstc/sign$', 'home', {'library': 'vstc', 'fixedwidth': settings.SIGN_WIDTH}, name='vstc-sign'),
+    url(r'^(?i)gelman/sign/(?P<width>[0-9]+)[/?]$', 'home', {'library': 'gelman'}, name='gelman-sign'),
+    url(r'^(?i)eckles/sign/(?P<width>[0-9]+)[/?]$', 'home', {'library': 'eckles'}, name='eckles-sign'),
+    url(r'^(?i)vstc/sign/(?P<width>[0-9]+)[/?]$', 'home', {'library': 'vstc'}, name='vstc-sign'),
 )

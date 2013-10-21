@@ -46,7 +46,7 @@ ga('send', 'pageview');
     <body>
         <!-- this is the Libsite7 Lite Header -->
         <header class="navbar-fixed-top">
-            <div id="libheader-container" style="{% if fixedwidth != "" %}width:{{fixedwidth}}px{% endif %}">
+            <div id="libheader-container" style="{% if fixedwidth != 0 %}width:{{fixedwidth}}px{% endif %}">
                 <div id="libheader" class="container" style="">
                     <div class="libheader-logo hide-lo" style="">
                         <a href="http://www.gwu.edu" target="_blank" title="GWU website"><img src="{{ STATIC_URL }}img/gwheaderlogo.png" alt="logo: The George Washington University" /></a>
@@ -66,7 +66,7 @@ ga('send', 'pageview');
         </header>
         <!-- end Libsite7 Lite Header -->
 
-        <article class='container' style="{% if fixedwidth != "" %}width:{{fixedwidth}}px;margin-left:0{% endif %}">
+        <article class='container' style="{% if fixedwidth != 0 %}width:{{fixedwidth}}px;margin-left:0{% endif %}">
 {% block content %}
 {% endblock content %}
         </article>
