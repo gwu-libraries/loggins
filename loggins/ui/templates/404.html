@@ -24,7 +24,13 @@
 <ul>
     <li>{% url 'home' %}location/g3/3-005 (to view location 3-101 on Gelman, 3rd floor)
 </ul>
-<p>If you're trying to use the API:
+<p>If you're looking to view a particular library's computers using a fixed-width display, try:
+<ul>
+    <li><a href="{% url 'home' %}gelman/sign/400/">{% url 'home' %}gelman/sign/400</a> (you can change the number to your desired pixel width
+    <li><a href="{% url 'home' %}eckles/sign/400/">{% url 'home' %}eckles/sign/400</a>
+    <li><a href="{% url 'home' %}vstc/sign/400/">{% url 'home' %}vstc/400/</a>
+</ul>
+<p>Last but not least, if you're trying to use the API:
 <ul>
     <li><a href="{% url 'home' %}api/">{% url 'home' %}api/</a>
 </ul>
