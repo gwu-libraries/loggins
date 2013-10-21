@@ -5,11 +5,7 @@
 {% block content %}
 <div class='span12' style="{% if fixedwidth != 0 %}width:{{fixedwidth}}px{% endif %}">
     <h1>{% if library_filter == "All" %}
-        Library
-        {% else %}
-        {{library_filter|capfirst}} library
-        {% endif %}
-        workstations available</h1>
+        Library {% else %} {{library_filter|capfirst}} library {% endif %} workstations available</h1>
 {% if buildingfloors %}
 <table class='table' style="{% if fixedwidth != 0 %}width:{{fixedwidth}}px{% endif %}">
     <thead>
