@@ -92,6 +92,7 @@ $ cp wsgi.py.template wsgi.py
 
 pull in the static files (for admin, etc.):
 ```
+$ cd ..
 $ ./manage.py collectstatic
 ```
 
