@@ -78,15 +78,15 @@ then add in correct ADMINS, DATABASE and SNMP_COMMUNITY_STRING info.
 Add host info in ALLOWED_HOSTS.
 Note: If you don't have a SNMP community string, just enter 'public'
 ```
-$ cd loggins
-$ cp loggins/local_settings.py.template loggins/local_settings.py
+$ cd loggins/loggins
+$ cp local_settings.py.template local_settings.py
 [edit edit edit]
 ```
 
 copy over the wsgi template to a real wsgi file, uncomment the
 virtualenv details and specify the path to your virtualenv:
 ```
-$ cp loggins/wsgi.py.template loggins/wsgi.py
+$ cp wsgi.py.template wsgi.py
 [edit edit edit]
 ```
 
