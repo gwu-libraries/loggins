@@ -1,5 +1,5 @@
 django==1.5.1
-django-tastypie
+django-tastypie!=0.10.0
 psycopg2
 pytz
 south
