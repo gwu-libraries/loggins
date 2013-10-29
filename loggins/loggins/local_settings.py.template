@@ -4,6 +4,11 @@ ADMINS = (
     ('Your name', 'your.address@example.com'),
 )
 
+# This value should be something like [loggins-test] (with a trailing space)
+EMAIL_SUBJECT_PREFIX = ' '
+# Set SERVER_EMIL to root@myserver, e.g. 'root@gwloggins-test.wrlc.org'
+SERVER_EMAIL = ''
+
 MANAGERS = ADMINS
 
 DATABASES = {
