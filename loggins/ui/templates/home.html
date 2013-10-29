@@ -3,11 +3,11 @@
 {% load humanize %}
 
 {% block content %}
-<div class='span12' style="{% if fixedwidth != 0 %}width:{{fixedwidth}}px{% endif %}">
+<div class='span12' style="{% if fixedwidth != 0 %}width:{{fixedwidth|add:"-10"}}px;margin-left:10px{% endif %}">
     <h1>{% if library_filter == "All" %}
         Library {% else %} {{library_filter|capfirst}} library {% endif %} workstations available</h1>
 {% if buildingfloors %}
-<table class='table' style="{% if fixedwidth != 0 %}width:{{fixedwidth}}px{% endif %}">
+<table class='table tight-table' style="{% if fixedwidth != 0 %}width:{{fixedwidthL|add:"-10"}}px{% endif %}">
     <thead>
         <tr>
             <th>Floor</th>
@@ -18,7 +18,7 @@
     <tbody>
         {% for buildingfloor in buildingfloors %}
         <tr>
-            <td><a href="{% url 'floor' buildingfloor.buildingfloorcode %}">{{ buildingfloor.building_display}}, {{buildingfloor.floor_display }}</a></td>
+            <td><a href="{% url 'floor' buildingfloor.buildingfloorcode %}">{% if library_filter == "All" %}{{ buildingfloor.building_display}}, {% endif %}{{buildingfloor.floor_display }}</a></td>
             <td>{% if buildingfloor.num_total_win > 0 %}{{buildingfloor.num_available_win}} of {{buildingfloor.num_total_win}}{% endif %}</td>
             <td>{% if buildingfloor.num_total_mac > 0 %}{{buildingfloor.num_available_mac}} of {{buildingfloor.num_total_mac}}{% endif %}</td>
         </tr>
@@ -44,18 +44,22 @@
     </tbody>
 </table>
 {% endif %}
+{% if fixedwidth == 0 %}
 <h4>Show: 
 {% if library_filter != "All" %}<a href="{% url 'home' %}">All</a> / {% endif %}
 {% if library_filter != "Gelman" %}<a href="{% url 'gelman-home' %}">Gelman</a> / {% endif %}
 {% if library_filter != "Eckles" %}<a href="{% url 'eckles-home' %}">Eckles</a> {% if library_filter != "VSTC" %} / {% endif %}{% endif %}
 {% if library_filter != "VSTC" %}<a href="{% url 'vstc-home' %}">VSTC</a>{% endif %}
 </h4>
+{% endif %}
 <h4>
 Last updated on {% now "DATETIME_FORMAT"%}
 </h4>
+{% if fixedwidth == 0 %}
 <h4>
 <a href="http://library.gwu.edu/services/computers-wireless/library-computers">About GW Libraries Computers</a>
 </div>
 </h4>
+{% endif %}
 </div>
 {% endblock content %}

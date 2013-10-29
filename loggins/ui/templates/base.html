@@ -14,7 +14,7 @@
                 $(function() {
                     setTimeout(function() {
                         window.location = location.href;
-                    }, 30000);
+                    }, 300000);
                 });
             </script>
         {% endblock javascript_extra %}
@@ -22,7 +22,11 @@
         <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet" />
         <link href="{{ STATIC_URL }}css/libheader7_lite.css" rel="stylesheet" type='text/css' media='screen' />
         <link href="{{ STATIC_URL }}css/libheader7_lite_bootswatch.css" rel="stylesheet" type='text/css' media='screen' />
+        {% if fixedwidth != 0 %}
+        <link href="{{ STATIC_URL }}css/loggins-fixed.css" rel="stylesheet" type='text/css' media='screen' />
+        {% else %}
         <link href="{{ STATIC_URL }}css/loggins.css" rel="stylesheet" type='text/css' media='screen' />
+        {% endif %}
          <!--[if lt IE 9]>
          <link href="{{ STATIC_URL }}css/libheader7_lite_ie.css" rel="stylesheet">
          <![endif]-->
@@ -51,9 +55,11 @@ ga('send', 'pageview');
                     <div class="libheader-logo hide-lo" style="">
                         <a href="http://www.gwu.edu" target="_blank" title="GWU website"><img src="{{ STATIC_URL }}img/gwheaderlogo.png" alt="logo: The George Washington University" /></a>
                     </div>
+                    {% if fixedwidth == 0 %}
                     <div class="libheader-liblink" style="">
                         <a href="http://library.gwu.edu" target="_blank" title="GW Libraries website">GW Libraries</a>
                     </div>
+                    {% endif %}
                     <div class="libheader-link" style="">
                         <a href="{% url 'home' %}" title="computers.library.gwu.edu home">computers.library.gwu.edu</a>
                     </div>
@@ -67,15 +73,17 @@ ga('send', 'pageview');
         <!-- end Libsite7 Lite Header -->
 
         <article class='container' style="{% if fixedwidth != 0 %}width:{{fixedwidth}}px;margin-left:0{% endif %}">
+            <div class="row-fluid">
 {% block content %}
 {% endblock content %}
+            </div>
         </article>
 
         <!-- the Libsite7 Lite Footer -->
-        <footer class="navbar-fixed-bottom">
-            <div id="libfooter-container" style="{% if fixedwidth != 0 %}width:{{fixedwidth}}px{% endif %}">
-                <div id="libfooter" class="container" style="">
-                    <div class="libfooter-text" style="">
+        <footer class="navbar-fixed-bottom" style="{% if fixedwidth != 0 %}position:absolute;bottom:0;width:{{fixedwidth}}px;padding-right:0{% endif %}">
+            <div id="libfooter-container" style="width:100%">
+                <div id="libfooter" class="container" style="width:100%">
+                    <div class="libfooter-text" style="{% if fixedwidth != 0 %}display:none{% endif %}">
                         <span class="address">
                             <a href="http://library.gwu.edu" target="_blank" title="GW Libraries Website">GW Libraries</a> 
                             &#8226; 2130 H Street NW &#8226; Washington DC 20052

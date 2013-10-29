@@ -1,0 +1,19 @@
+article {
+    padding-top: 3em;
+    padding-bottom: 3em;
+    min-height: 0;
+}
+.tight-table td, .tight-table th {
+    padding: 8px 8px 8px 0;
+}
+@media screen and (max-width: 979px) {
+     article {padding-top:.7em;}
+     .navbar-fixed-top {margin-bottom: 0;}
+     #libheader-container {margin-bottom:0}
+}
+@media screen and (max-width: 769px) {
+   .navbar-fixed-bottom {margin-left:0px;}
+   .container {margin-left:-20px !important;}
+   #libfoot-container {width:100%;}
+   .libheader-link {margin-left:2.4em;}
+}
