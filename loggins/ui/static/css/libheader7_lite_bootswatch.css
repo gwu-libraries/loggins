@@ -5,6 +5,13 @@
     max-width: 1170px;
 }
 
+.libsite-container {
+    margin-top: 35px;
+    margin-bottom: 35px;
+}
+
+@media screen and (min-width:980px) { .libsite-container {margin-top:3em;} }
+
 #libfooter {
     width: auto;
     max-width: 1170px;
