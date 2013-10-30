@@ -1,4 +1,16 @@
 article {
     padding-top: 3em;
     padding-bottom: 3em;
+    min-height: 0;
+}
+.tight-table td, .tight-table th {
+    padding: 8px 8px 8px 0;
+}
+@media screen and (max-width: 979px) {
+    article {padding-top:.7em;}
+    .navbar-fixed-top {margin-bottom: 0;}
+    #libheader-container {margin-bottom:0}
+}
+@media screen and (max-width: 769px) {
+    #libfoot-container {width:100%;}
 }
