@@ -3,11 +3,11 @@
 {% load humanize %}
 
 {% block content %}
-<div class='span12' style="{% if fixedwidth != 0 %}width:{{fixedwidth|add:"-10"}}px;margin-left:10px{% endif %}">
+<div class='span12' style="{% if fixedwidth and fixedwidth != 0 %}width:{{fixedwidth|add:"-10"}}px;margin-left:10px{% endif %}">
     <h1>{% if library_filter == "All" %}
         Library {% else %} {{library_filter|capfirst}} library {% endif %} workstations available</h1>
 {% if buildingfloors %}
-<table class='table tight-table' style="{% if fixedwidth != 0 %}width:{{fixedwidthL|add:"-10"}}px{% endif %}">
+<table class='table tight-table' style="{% if fixedwidth and fixedwidth != 0 %}width:{{fixedwidthL|add:"-10"}}px{% endif %}">
     <thead>
         <tr>
             <th>Floor</th>

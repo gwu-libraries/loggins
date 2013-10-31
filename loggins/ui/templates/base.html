@@ -22,7 +22,7 @@
         <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet" />
         <link href="{{ STATIC_URL }}css/libheader7_lite.css" rel="stylesheet" type='text/css' media='screen' />
         <link href="{{ STATIC_URL }}css/libheader7_lite_bootswatch.css" rel="stylesheet" type='text/css' media='screen' />
-        {% if fixedwidth != 0 %}
+        {% if fixedwidth and fixedwidth != 0 %}
         <link href="{{ STATIC_URL }}css/loggins-fixed.css" rel="stylesheet" type='text/css' media='screen' />
         {% else %}
         <link href="{{ STATIC_URL }}css/loggins.css" rel="stylesheet" type='text/css' media='screen' />
@@ -50,7 +50,7 @@ ga('send', 'pageview');
     <body>
         <!-- this is the Libsite7 Lite Header -->
         <header class="navbar-fixed-top">
-            <div id="libheader-container" style="{% if fixedwidth != 0 %}width:{{fixedwidth}}px{% endif %}">
+            <div id="libheader-container" style="{% if fixedwidth and fixedwidth != 0 %}width:{{fixedwidth}}px{% endif %}">
                 <div id="libheader" class="container" style="">
                     <div class="libheader-logo hide-lo" style="">
                         <a href="http://www.gwu.edu" target="_blank" title="GWU website"><img src="{{ STATIC_URL }}img/gwheaderlogo.png" alt="logo: The George Washington University" /></a>
@@ -72,7 +72,7 @@ ga('send', 'pageview');
         </header>
         <!-- end Libsite7 Lite Header -->
 
-        <article class='container' style="{% if fixedwidth != 0 %}width:{{fixedwidth}}px;margin-left:0{% endif %}">
+        <article class='container' style="{% if fixedwidth and fixedwidth != 0 %}width:{{fixedwidth}}px;margin-left:0{% endif %}">
             <div class="row-fluid">
 {% block content %}
 {% endblock content %}
@@ -80,10 +80,10 @@ ga('send', 'pageview');
         </article>
 
         <!-- the Libsite7 Lite Footer -->
-        <footer class="navbar-fixed-bottom" style="{% if fixedwidth != 0 %}position:absolute;bottom:0;width:{{fixedwidth}}px;padding-right:0{% endif %}">
+        <footer class="navbar-fixed-bottom" style="{% if fixedwidth and fixedwidth != 0 %}position:absolute;bottom:0;width:{{fixedwidth}}px;padding-right:0{% endif %}">
             <div id="libfooter-container" style="width:100%">
                 <div id="libfooter" class="container" style="width:100%">
-                    <div class="libfooter-text" style="{% if fixedwidth != 0 %}display:none{% endif %}">
+                    <div class="libfooter-text" style="{% if fixedwidth and fixedwidth and fixedwidth != 0 %}display:none{% endif %}">
                         <span class="address">
                             <a href="http://library.gwu.edu" target="_blank" title="GW Libraries Website">GW Libraries</a> 
                             &#8226; 2130 H Street NW &#8226; Washington DC 20052
