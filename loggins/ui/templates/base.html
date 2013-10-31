@@ -55,7 +55,7 @@ ga('send', 'pageview');
                     <div class="libheader-logo hide-lo" style="">
                         <a href="http://www.gwu.edu" target="_blank" title="GWU website"><img src="{{ STATIC_URL }}img/gwheaderlogo.png" alt="logo: The George Washington University" /></a>
                     </div>
-                    {% if fixedwidth == 0 %}
+                    {% if not fixedwidth or fixedwidth == 0 %}
                     <div class="libheader-liblink" style="">
                         <a href="http://library.gwu.edu" target="_blank" title="GW Libraries website">GW Libraries</a>
                     </div>
