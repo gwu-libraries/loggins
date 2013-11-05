@@ -42,7 +42,8 @@ class Location(models.Model):
     # station name/number does not have to be unique across floors/buildings
     station_name = models.CharField(max_length=50, db_index=True)
     hostname = models.CharField(max_length=50, db_index=True)
-    ip_address = models.GenericIPAddressField(db_index=True, blank=True, null=True)
+    ip_address = models.GenericIPAddressField(db_index=True, blank=True,
+                                              null=True)
     os = models.CharField(db_index=True, max_length=4, choices=OS_TYPES,
                           default='', blank=True)
     state = models.CharField(db_index=True, max_length=2,
@@ -84,10 +85,6 @@ class Session(models.Model):
         return self.timestamp_end - self.timestamp_start
 
 
-#class Anomaly(models.Model):
-#    login = models.ForeignKey(Record, related_name='anomalies')
-
-
 @receiver(pre_save, sender=Location)
 def location_state_change_reciever(sender, instance, **kwargs):
     if instance.id:
@@ -114,13 +111,15 @@ def location_state_change_reciever(sender, instance, **kwargs):
 
                 if instance.state == Location.NO_RESPONSE:
                     print "%s went offline" % instance
-                    instance.last_offline_start_time = instance.observation_time
+                    instance.last_offline_start_time = \
+                        instance.observation_time
 
         elif old_instance.state == Location.NO_RESPONSE:
             if instance.state != Location.NO_RESPONSE:
                 offline_session = Session(session_type=Session.OFFLINE)
                 offline_session.location = instance
-                offline_session.timestamp_start = instance.last_offline_start_time
+                offline_session.timestamp_start = \
+                    instance.last_offline_start_time
                 offline_session.timestamp_end = instance.observation_time
                 offline_session.save()
 
