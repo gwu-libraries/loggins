@@ -14,8 +14,26 @@ admin.site.unregister(User)
 admin.site.register(User, UserModelAdmin)
 
 
+class BuildingAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name']
+admin.site.register(models.Building, BuildingAdmin)
+
+
+class FloorAdmin(admin.ModelAdmin):
+    list_display = ['id', 'floor', 'building']
+    list_filter = ['building__name']
+    ordering = ['building__name', 'floor']
+admin.site.register(models.Floor, FloorAdmin)
+
+
+class ZoneAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name', 'floor', 'display_order']
+    list_editable = ['name', 'floor', 'display_order']
+admin.site.register(models.Zone, ZoneAdmin)
+
+
 class LocationAdmin(admin.ModelAdmin):
-    list_display = ['id', 'building', 'floor', 'station_name', 'hostname',
+    list_display = ['id', 'building', 'floor', 'zone', 'station_name', 'hostname',
                     'ip_address', 'os', 'state', 'observation_time']
     list_filter = ['building']
     search_fields = ['station_name']

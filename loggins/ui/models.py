@@ -10,6 +10,30 @@ from tastypie.models import create_api_key
 models.signals.post_save.connect(create_api_key, sender=User)
 
 
+class Building(models.Model):
+    name = models.CharField(max_length=50, db_index=True)
+
+    def __unicode__(self):
+        return '<Building %s>' % (self.name)
+
+
+class Floor(models.Model):
+    floor = models.PositiveSmallIntegerField()
+    building = models.ForeignKey(Building, related_name='buildings')
+
+    def __unicode__(self):
+        return '<Floor %s %d>' % (self.building.name, self.floor)
+
+
+class Zone(models.Model):
+    name = models.CharField(max_length=50, db_index=True)
+    display_order = models.PositiveSmallIntegerField()
+    floor = models.ForeignKey(Floor, related_name='floors')
+
+    def __unicode__(self):
+        return '<Zone %s %s %d>' % (self.name, self.floor.building.name, self.floor.floor)
+
+
 class Location(models.Model):
     GELMAN = 'g'
     ECKLES = 'e'
@@ -39,6 +63,7 @@ class Location(models.Model):
     building = models.CharField(db_index=True, max_length=2,
                                 choices=BUILDINGS, default='')
     floor = models.PositiveSmallIntegerField()
+    zone = models.ForeignKey(Zone, related_name='zones', null=True)
     # station name/number does not have to be unique across floors/buildings
     station_name = models.CharField(max_length=50, db_index=True)
     hostname = models.CharField(max_length=50, db_index=True)
