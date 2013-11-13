@@ -1,5 +1,4 @@
 from tastypie.admin import ApiKeyInline
-from tastypie.models import ApiAccess, ApiKey
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
@@ -33,8 +32,9 @@ admin.site.register(models.Zone, ZoneAdmin)
 
 
 class LocationAdmin(admin.ModelAdmin):
-    list_display = ['id', 'building', 'floor', 'zone', 'station_name', 'hostname',
-                    'ip_address', 'os', 'state', 'observation_time']
+    list_display = ['id', 'building', 'floor', 'zone', 'station_name',
+                    'hostname', 'ip_address', 'os', 'state',
+                    'observation_time']
     list_filter = ['building']
     search_fields = ['station_name']
 admin.site.register(models.Location, LocationAdmin)

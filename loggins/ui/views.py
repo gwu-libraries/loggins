@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.core.paginator import EmptyPage, PageNotAnInteger
 from django.shortcuts import render
-from ui.models import Location
+from ui.models import Location, Zone, Building
 
 
 def _paginate(request, paginator):
@@ -16,60 +16,48 @@ def _paginate(request, paginator):
 
 
 def home(request, library, width=0):
-    locations = Location.objects
-    # create an iterable with one item per unique building/floor combo
-    buildingfloors = locations.values('building', 'floor').distinct(
-        'building', 'floor')
-    # if URL contained a specific (and known) library, filter reults further
-    library = library.lower()
-    if library in ['gelman', 'eckles', 'vstc']:
-        # WARNING: this makes an assumption about
-        # the choices dictionary in the model
-        librarycode = {'gelman': 'g', 'eckles': 'e', 'vstc': 'v'}
-        buildingfloors = buildingfloors.filter(building=librarycode[library])
-    # compute display info for each floor
-    for f in buildingfloors:
-        temploc = Location(building=f['building'], floor=f['floor'])
-        # get building name and floor verbage for this building/floor
-        bldgname = temploc.get_building_display()
-        floorname = temploc.display_floor()
-        # compute total vs. available locations
-        locations_on_this_floor = locations.filter(
-            building=f['building'], floor=f['floor'])
-        winlocations = locations_on_this_floor.filter(os=Location.WINDOWS7)
-        num_total_win = winlocations.count()
-        num_available_win = winlocations.filter(
-            state=Location.AVAILABLE).count()
-        maclocations = locations_on_this_floor.filter(os=Location.MACOSX)
-        num_total_mac = maclocations.count()
-        num_available_mac = maclocations.filter(
-            state=Location.AVAILABLE).count()
-        f['buildingfloorcode'] = f['building'] + str(f['floor'])
-        f['building_display'] = bldgname
-        f['floor_display'] = floorname
-        f['num_total_win'] = num_total_win
-        f['num_available_win'] = num_available_win
-        f['num_total_mac'] = num_total_mac
-        f['num_available_mac'] = num_available_mac
+    zones = Zone.objects.order_by('floor__building__name', 'display_order')
+    locations = Location.objects.all()
 
-    if library.lower() == 'gelman':
-        library_filter = 'Gelman'
-    elif library.lower() == 'eckles':
-        library_filter = 'Eckles'
-    elif library.lower() == 'vstc':
-        library_filter = 'VSTC'
+    # find library in buildings
+    building = [str(b) for b
+                in Building.objects.values_list('name', flat=True)
+                if library.lower() == str(b).lower()]
+    # if it's found in the list, then filter further
+    if building:
+        zones = zones.filter(floor__building__name=building[0])
+        library_title = " (" + building[0] + ") "
     else:
-        library_filter = 'All'
-
-    if library_filter != 'All':
-        library_title = " (" + library_filter + ") "
-    else:
+        building = 'All'
         library_title = ""
+
+    # compute display info for each floor
+    zonelist = []
+    for zone in zones:
+        z = {}
+        locations_zone = locations.filter(zone=zone)
+        locations_win = locations_zone.filter(os=Location.WINDOWS7)
+        locations_win_available = locations_win.filter(
+            state=Location.AVAILABLE)
+        locations_mac = locations_zone.filter(os=Location.MACOSX)
+        locations_mac_available = locations_mac.filter(
+            state=Location.AVAILABLE)
+        z['building_display'] = str(zone.floor.building.name)
+        # change this to use floor.name if present
+        z['floor_display'] = zone.name
+        z['num_total_win'] = locations_win.count()
+        z['num_available_win'] = locations_win_available.count()
+        z['num_total_mac'] = locations_mac.count()
+        z['num_available_mac'] = locations_mac_available.count()
+        #TODO: Remove this after eliminating dependencies
+        z['buildingfloorcode'] = 'g2'
+        zonelist.append(z)
+        print(z)
 
     return render(request, 'home.html', {
         'title': 'Computers Available %s - GW Libraries' % library_title,
-        'buildingfloors': buildingfloors,
-        'library_filter': library_filter,
+        'buildingfloors': zonelist,
+        'library_filter': building,
         'google_analytics_ua': settings.GOOGLE_ANALYTICS_UA,
         'fixedwidth': int(width),
     })

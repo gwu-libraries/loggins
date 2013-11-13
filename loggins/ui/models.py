@@ -31,7 +31,8 @@ class Zone(models.Model):
     floor = models.ForeignKey(Floor, related_name='floors')
 
     def __unicode__(self):
-        return '<Zone %s %s %d>' % (self.name, self.floor.building.name, self.floor.floor)
+        return '<Zone %s %s %d>' % (self.name, self.floor.building.name,
+                                    self.floor.floor)
 
 
 class Location(models.Model):
