@@ -35,6 +35,7 @@ urlpatterns += patterns('ui.views',
     # code should be something like 'g2' for Gelman 2nd floor
     url(r'^floor/(?P<code>[a-z|A-Z][0-9])/$', 'floor', name='floor'),
     # offline carrels
+    url(r'^(?i)offline/$', 'offline', {'library': 'all'}, name='offline'),
     url(r'^(?i)gelman/offline$', 'offline', {'library': 'gelman'}, name='gelman-offline'),
     url(r'^(?i)eckles/offline$', 'offline', {'library': 'eckles'}, name='eckles-offline'),
     url(r'^(?i)vstc/offline$', 'offline', {'library': 'vstc'}, name='vstc-offline'),
