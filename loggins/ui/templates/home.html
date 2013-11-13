@@ -6,7 +6,7 @@
 <div class='span12' style="{% if fixedwidth and fixedwidth != 0 %}width:{{fixedwidth|add:"-10"}}px;margin-left:10px{% endif %}">
     <h1>{% if library_filter == "All" %}
         Library {% else %} {{library_filter|capfirst}} library {% endif %} workstations available</h1>
-{% if buildingfloors %}
+{% if zones %}
 <table class='table tight-table' style="{% if fixedwidth and fixedwidth != 0 %}width:{{fixedwidth|add:"-10"}}px{% endif %}">
     <thead>
         <tr>
@@ -16,11 +16,11 @@
         </tr>
     </thead>
     <tbody>
-        {% for buildingfloor in buildingfloors %}
+        {% for zone in zones %}
         <tr>
-            <td><a href="{% url 'floor' buildingfloor.buildingfloorcode %}">{% if library_filter == "All" %}{{ buildingfloor.building_display}}, {% endif %}{{buildingfloor.floor_display }}</a></td>
-            <td>{% if buildingfloor.num_total_win > 0 %}{{buildingfloor.num_available_win}} of {{buildingfloor.num_total_win}}{% endif %}</td>
-            <td>{% if buildingfloor.num_total_mac > 0 %}{{buildingfloor.num_available_mac}} of {{buildingfloor.num_total_mac}}{% endif %}</td>
+            <td><a href="{% url 'floor' zone.buildingfloorcode %}">{% if library_filter == "All" %}{{ zone.building_display}}, {% endif %}{{zone.zone_display }}</a></td>
+            <td>{% if zone.num_total_win > 0 %}{{zone.num_available_win}} of {{zone.num_total_win}}{% endif %}</td>
+            <td>{% if zone.num_total_mac > 0 %}{{zone.num_available_mac}} of {{zone.num_total_mac}}{% endif %}</td>
         </tr>
         {% endfor %}
     </tbody>

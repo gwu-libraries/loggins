@@ -15,36 +15,42 @@ def _paginate(request, paginator):
     return page, items
 
 
+# match item with item in list with 'official' capitalization
+def _get_original_string_from_list(s, thelist):
+    matches = [x for x in thelist if s.lower() == x.lower()]
+    if matches:
+        return matches[0]
+    else:
+        return None
+
+
 def home(request, library, width=0):
     zones = Zone.objects.order_by('floor__building__name', 'display_order')
     locations = Location.objects.all()
 
-    # find library in buildings
-    building = [str(b) for b
-                in Building.objects.values_list('name', flat=True)
-                if library.lower() == str(b).lower()]
-    # if it's found in the list, then filter further
+    # find library in buildings list, and clean up capitalization
+    building = _get_original_string_from_list(
+        library, map(str, Building.objects.values_list('name', flat=True)))
     if building:
-        zones = zones.filter(floor__building__name=building[0])
-        library_title = " (" + building[0] + ") "
+        zones = zones.filter(floor__building__name=building)
+        library_title = " (" + building + ") "
     else:
         building = 'All'
         library_title = ""
 
-    # compute display info for each floor
     zonelist = []
+    # compute display info for each zone
     for zone in zones:
         z = {}
-        locations_zone = locations.filter(zone=zone)
-        locations_win = locations_zone.filter(os=Location.WINDOWS7)
+        locations_in_zone = locations.filter(zone=zone)
+        locations_win = locations_in_zone.filter(os=Location.WINDOWS7)
         locations_win_available = locations_win.filter(
             state=Location.AVAILABLE)
-        locations_mac = locations_zone.filter(os=Location.MACOSX)
+        locations_mac = locations_in_zone.filter(os=Location.MACOSX)
         locations_mac_available = locations_mac.filter(
             state=Location.AVAILABLE)
         z['building_display'] = str(zone.floor.building.name)
-        # change this to use floor.name if present
-        z['floor_display'] = zone.name
+        z['zone_display'] = zone.name
         z['num_total_win'] = locations_win.count()
         z['num_available_win'] = locations_win_available.count()
         z['num_total_mac'] = locations_mac.count()
@@ -56,7 +62,7 @@ def home(request, library, width=0):
 
     return render(request, 'home.html', {
         'title': 'Computers Available %s - GW Libraries' % library_title,
-        'buildingfloors': zonelist,
+        'zones': zonelist,
         'library_filter': building,
         'google_analytics_ua': settings.GOOGLE_ANALYTICS_UA,
         'fixedwidth': int(width),
@@ -111,30 +117,31 @@ def floor(request, code):
 
 
 def offline(request, library):
-    library = library.lower()
-    if library in ['gelman', 'eckles', 'vstc']:
-        # WARNING: this makes an assumption about
-        # the choices dictionary in the model
-        librarycode = {'gelman': 'g', 'eckles': 'e', 'vstc': 'v'}[library]
+    building = _get_original_string_from_list(
+        library, map(str, Building.objects.values_list('name', flat=True)))
 
-    locations = Location.objects.filter(building=librarycode,
-                                        state=Location.NO_RESPONSE).\
-        order_by('floor', 'last_offline_start_time').values()
-    temploc = Location(building=librarycode)
-    # get building name and floor verbage for this building/floor
-    bldgname = temploc.get_building_display()
-    for l in locations:
-        temploc = Location(building=l['building'], floor=l['floor'])
-        floorname = temploc.display_floor()
-        l['floorname'] = floorname
-        l['state_display'] = Location(state=l['state']).get_state_display()
-        l['os_display'] = Location(os=l['os']).get_os_display()
-        l['bldgfloorcode'] = l['building'] + str(l['floor'])
-        l['offlinesince'] = l['last_offline_start_time']
+    locations = Location.objects.filter(state=Location.NO_RESPONSE)
+    if building:
+        locations = locations.filter(zone__floor__building__name=building)
+    locations = locations.order_by('zone__floor__building__name',
+                                   'zone__floor__floor',
+                                   'zone__display_order',
+                                   'last_offline_start_time')
+    loclist = []
+    for location in locations:
+        l = {}
+        l['zonename'] = location.zone.name
+        l['building'] = location.zone.floor.building.name
+        l['station_name'] = location.station_name
+        l['state_display'] = Location(state=location.state).get_state_display()
+        l['os_display'] = Location(os=location.os).get_os_display()
+#        l['bldgfloorcode'] = l['building'] + str(l['floor'])
+        l['offlinesince'] = location.last_offline_start_time
+        loclist.append(l)
 
     return render(request, 'offline.html', {
         'title': 'Computers Offline - GW Libraries',
-        'locations': locations,
-        'building': bldgname,
+        'locations': loclist,
+        'building': building,
         'google_analytics_ua': settings.GOOGLE_ANALYTICS_UA,
     })
