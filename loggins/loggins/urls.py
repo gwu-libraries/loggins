@@ -5,12 +5,16 @@ from django.views.generic import TemplateView
 from tastypie.api import Api
 
 from ui.api import LocationResource, SessionResource
+from ui.models import Building
 
 admin.autodiscover()
 
 api_1 = Api(api_name='v1')
 api_1.register(LocationResource())
 api_1.register(SessionResource())
+
+buildings = map(str, Building.objects.values_list('name', flat=True))
+buildings_or = '|'.join(buildings)
 
 urlpatterns = patterns('',
     url(r'^api/', include(api_1.urls)),
@@ -26,9 +30,7 @@ urlpatterns += patterns('ui.views',
     # "or" match can be specified with r'^(?P<library>gelman|eckles|
     # vstc)/(?P<floor>[0-9])/$'
     #(?i) = case insensitive match
-    url(r'^(?i)gelman/$', 'home', {'library': 'gelman'}, name='gelman-home'),
-    url(r'^(?i)eckles/$', 'home', {'library': 'eckles'}, name='eckles-home'),
-    url(r'^(?i)vstc/$', 'home', {'library': 'vstc'}, name='vstc-home'),
+    url(r'^(?P<library>(?i)(%s)?)/$' % buildings_or, 'home', name='home'),
     # example:  location/g2/PC101   for PC101 on Gelman 2nd floor
     url(r'^location/(?P<bldgfloorcode>[a-z|A-Z][0-9])/(?P<station>[0-9|a-z|A-Z]-[L|l|0-9]+)/$',
         'location', name='location'),
@@ -36,10 +38,6 @@ urlpatterns += patterns('ui.views',
     url(r'^floor/(?P<code>[a-z|A-Z][0-9])/$', 'floor', name='floor'),
     # offline carrels
     url(r'^(?i)offline/$', 'offline', {'library': 'all'}, name='offline'),
-    url(r'^(?i)gelman/offline$', 'offline', {'library': 'gelman'}, name='gelman-offline'),
-    url(r'^(?i)eckles/offline$', 'offline', {'library': 'eckles'}, name='eckles-offline'),
-    url(r'^(?i)vstc/offline$', 'offline', {'library': 'vstc'}, name='vstc-offline'),
-    url(r'^(?i)gelman/sign/(?P<width>[0-9]+)[/?]$', 'home', {'library': 'gelman'}, name='gelman-sign'),
-    url(r'^(?i)eckles/sign/(?P<width>[0-9]+)[/?]$', 'home', {'library': 'eckles'}, name='eckles-sign'),
-    url(r'^(?i)vstc/sign/(?P<width>[0-9]+)[/?]$', 'home', {'library': 'vstc'}, name='vstc-sign'),
+    url(r'^(?P<library>(?i)(%s)?)/offline/$' % buildings_or, 'offline', name='offline'),
+    url(r'^(?P<library>(?i)(%s)?)/sign/(?P<width>[0-9]+)/$' % buildings_or, 'home', name='sign'),
 )
