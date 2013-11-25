@@ -47,9 +47,9 @@
 {% if fixedwidth == 0 %}
 <h4>Show: 
 {% if library_filter != "All" %}<a href="{% url 'home' %}">All</a> / {% endif %}
-{% if library_filter != "Gelman" %}<a href="{% url 'gelman-home' %}">Gelman</a> / {% endif %}
-{% if library_filter != "Eckles" %}<a href="{% url 'eckles-home' %}">Eckles</a> {% if library_filter != "VSTC" %} / {% endif %}{% endif %}
-{% if library_filter != "VSTC" %}<a href="{% url 'vstc-home' %}">VSTC</a>{% endif %}
+{% if library_filter != "Gelman" %}<a href="{% url 'home' library='gelman'%}">Gelman</a> / {% endif %}
+{% if library_filter != "Eckles" %}<a href="{% url 'home' library='eckles'%}">Eckles</a> {% if library_filter != "VSTC" %} / {% endif %}{% endif %}
+{% if library_filter != "VSTC" %}<a href="{% url 'home' library='vstc'%}">VSTC</a>{% endif %}
 </h4>
 {% endif %}
 <h4>
