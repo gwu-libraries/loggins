@@ -30,14 +30,17 @@ urlpatterns += patterns('ui.views',
     # "or" match can be specified with r'^(?P<library>gelman|eckles|
     # vstc)/(?P<floor>[0-9])/$'
     #(?i) = case insensitive match
+    # example:  gelman
     url(r'^(?P<library>(?i)(%s)?)/$' % buildings_or, 'home', name='home'),
-    # example:  location/g2/PC101   for PC101 on Gelman 2nd floor
-    url(r'^location/(?P<bldgfloorcode>[a-z|A-Z][0-9])/(?P<station>[0-9|a-z|A-Z]-[L|l|0-9]+)/$',
+    # example:  location/gelman/PC101   for PC101 in Gelman
+    url(r'^location/(?P<library>(?i)(%s)?)/(?P<station>[0-9|a-z|A-Z]-[L|l|0-9]+)/$' % buildings_or,
         'location', name='location'),
-    # code should be something like 'g2' for Gelman 2nd floor
-    url(r'^floor/(?P<code>[a-z|A-Z][0-9])/$', 'floor', name='floor'),
-    # offline carrels
+    # example:  gelman/floor/2
+    url(r'^(?P<library>(?i)(%s)?)/floor/(?P<floor_number>[0-9])/$$' % buildings_or, 'floor', name='floor'),
+    # all offline carrels
     url(r'^(?i)offline/$', 'offline', {'library': 'all'}, name='offline'),
+    # example:  gelman/offline
     url(r'^(?P<library>(?i)(%s)?)/offline/$' % buildings_or, 'offline', name='offline'),
+    # example:  gelman/sign/250
     url(r'^(?P<library>(?i)(%s)?)/sign/(?P<width>[0-9]+)/$' % buildings_or, 'home', name='sign'),
 )

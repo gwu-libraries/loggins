@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class='span12'>
-    <h1>History for {{ location.station_name }} on {{bldgname}}, {{floorname}}</h1>
+    <h1>History for {{ location.station_name }} on {{bldgname}}, {{zone}}</h1>
 
 {% if sessions %}
 {% if paginator.num_pages > 1 %}
@@ -27,6 +27,7 @@
 {% endif %}
 <table class='table'>
     <thead>
+        <th>type</th>
         <th>start</th>
         <th>end</th>
         <th>duration (min)</th>
@@ -34,8 +35,9 @@
     <tbody>
         {% for session in sessions %}
         <tr>
-            <td>{{ session.timestamp_login|date:"Y-m-d D H:i:s" }}</td>
-            <td>{{ session.timestamp_logout|date:"Y-m-d D H:i:s" }}</td>
+            <td>{{ session.session_type }}</td>
+            <td>{{ session.timestamp_start|date:"Y-m-d D H:i:s" }}</td>
+            <td>{{ session.timestamp_end|date:"Y-m-d D H:i:s" }}</td>
             <td>{{ session.duration_minutes }}</td>
         </tr>
         {% endfor %}

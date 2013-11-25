@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.core.paginator import EmptyPage, PageNotAnInteger
 from django.shortcuts import render
-from ui.models import Location, Zone, Building
+from ui.models import Location, Zone, Building, Session
 
 
 def _paginate(request, paginator):
@@ -51,12 +51,12 @@ def home(request, library, width=0):
             state=Location.AVAILABLE)
         z['building_display'] = str(zone.floor.building.name)
         z['zone_display'] = zone.name
+        z['floor_number'] = zone.floor.floor
         z['num_total_win'] = locations_win.count()
         z['num_available_win'] = locations_win_available.count()
         z['num_total_mac'] = locations_mac.count()
         z['num_available_mac'] = locations_mac_available.count()
         #TODO: Remove this after eliminating dependencies
-        z['buildingfloorcode'] = 'g2'
         zonelist.append(z)
         print(z)
 
@@ -69,49 +69,52 @@ def home(request, library, width=0):
     })
 
 
-def location(request, bldgfloorcode, station):
-    l = Location.objects.filter(building=bldgfloorcode[0].lower(),
-                                floor=int(bldgfloorcode[1]),
-                                station_name__iexact=station)
-    # TODO: Need to gracefully handle consition where len(l) = 0
-    temploc = Location(building=bldgfloorcode[0].lower(),
-                       floor=bldgfloorcode[1])
+def location(request, library, station):
+    locations = Location.objects.filter(
+        zone__floor__building__name__iexact=library,
+        station_name__iexact=station)
+    # TODO: Need to gracefully handle condition where len(l) = 0
+    location = locations[0]
+    sessions = Session.objects.filter(location=location)
+    building = _get_original_string_from_list(
+        library, map(str, Building.objects.values_list('name', flat=True)))
     # get building name and floor verbage for this building/floor
-    bldgname = temploc.get_building_display()
-    floorname = temploc.display_floor()
     return render(request, 'location.html', {
         'title': 'Station %s - GW Libraries' % station,
-        'bldgname': bldgname,
-        'floorname': floorname,
-        'building': bldgfloorcode[0],
-        'location': l.values()[0],
-        'floor': bldgfloorcode[1],
-        'sessions': {},
+        'zone': location.zone.name,
+        'bldgname': building,
+        'location': location,
+        'floor': location.zone.floor.floor,
+        'sessions': sessions,
         'paginator': {},
         'page': {},
         'google_analytics_ua': settings.GOOGLE_ANALYTICS_UA,
     })
 
 
-def floor(request, code):
-    bldgcode = code[0].lower()
-    floornum = int(code[1])
-    temploc = Location(building=bldgcode, floor=floornum)
-    # get building name and floor verbage for this building/floor
-    bldgname = temploc.get_building_display()
-    floorname = temploc.display_floor()
-    locations = Location.objects.filter(building=bldgcode, floor=floornum).\
-        order_by('state', 'os', 'station_name').values()
-    for l in locations:
-        l['state_display'] = Location(state=l['state']).get_state_display()
-        l['os_display'] = Location(os=l['os']).get_os_display()
+def floor(request, library, floor_number):
+    building = _get_original_string_from_list(
+        library, map(str, Building.objects.values_list('name', flat=True)))
+
+    locations = Location.objects.filter(zone__floor__building__name=building,
+                                        zone__floor__floor=floor_number)
+    locations = locations.order_by('zone__display_order',
+                                   'station_name')
+    loclist = []
+    for location in locations:
+        l = {}
+        l['zonename'] = location.zone.name
+        l['building'] = location.zone.floor.building.name
+        l['station_name'] = location.station_name
+        l['state_display'] = location.get_state_display()
+        l['os_display'] = location.get_os_display()
+        loclist.append(l)
+
     return render(request, 'floor.html', {
-        'title': 'Computers Available: %s %s - GW Libraries' % (bldgname,
-                                                                floorname),
-        'bldgfloorcode': code,
-        'locations': locations,
-        'building': bldgname,
-        'floorname': floorname,
+        'title': 'Computers Offline - GW Libraries',
+        'locations': loclist,
+        'building': building,
+        'bldgfloorcode': 'g2',
         'google_analytics_ua': settings.GOOGLE_ANALYTICS_UA,
     })
 
@@ -133,9 +136,8 @@ def offline(request, library):
         l['zonename'] = location.zone.name
         l['building'] = location.zone.floor.building.name
         l['station_name'] = location.station_name
-        l['state_display'] = Location(state=location.state).get_state_display()
-        l['os_display'] = Location(os=location.os).get_os_display()
-#        l['bldgfloorcode'] = l['building'] + str(l['floor'])
+        l['state_display'] = location.get_state_display()
+        l['os_display'] = location.get_os_display()
         l['offlinesince'] = location.last_offline_start_time
         loclist.append(l)
 
