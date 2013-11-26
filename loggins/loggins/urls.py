@@ -33,7 +33,7 @@ urlpatterns += patterns('ui.views',
     # example:  gelman
     url(r'^(?P<library>(?i)(%s)?)/$' % buildings_or, 'home', name='home'),
     # example:  location/gelman/PC101   for PC101 in Gelman
-    url(r'^location/(?P<library>(?i)(%s)?)/(?P<station>[0-9|a-z|A-Z]-[L|l|0-9]+)/$' % buildings_or,
+    url(r'^(?P<library>(?i)(%s)?)/location/(?P<station>[0-9|a-z|A-Z]-[L|l|0-9]+)/$' % buildings_or,
         'location', name='location'),
     # example:  gelman/floor/2
     url(r'^(?P<library>(?i)(%s)?)/floor/(?P<floor_number>[0-9])/$$' % buildings_or, 'floor', name='floor'),
