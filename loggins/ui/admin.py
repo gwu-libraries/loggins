@@ -32,17 +32,18 @@ admin.site.register(models.Zone, ZoneAdmin)
 
 
 class LocationAdmin(admin.ModelAdmin):
-    list_display = ['id', 'building', 'floor', 'zone', 'station_name',
+    list_display = ['id', 'zone', 'station_name',
                     'hostname', 'ip_address', 'os', 'state',
                     'observation_time']
-    list_filter = ['building']
+    #list_filter = ['building']
+    ordering = ['id']
     search_fields = ['station_name']
 admin.site.register(models.Location, LocationAdmin)
 
 
 class DurationFilter(admin.SimpleListFilter):
-    title = 'duration'
-    parameter_name = 'duration'
+    title = 'duration_minutes'
+    parameter_name = 'duration_minutes'
 
     def lookups(self, request, model_admin):
         return [('0-5', '0-5'),
