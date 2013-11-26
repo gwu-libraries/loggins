@@ -76,13 +76,11 @@ def location(request, library, station):
     # TODO: Need to gracefully handle condition where len(l) = 0
     location = locations[0]
     sessions = Session.objects.filter(location=location)
-    building = _get_original_string_from_list(
-        library, map(str, Building.objects.values_list('name', flat=True)))
-    # get building name and floor verbage for this building/floor
+
     return render(request, 'location.html', {
         'title': 'Station %s - GW Libraries' % station,
         'zone': location.zone.name,
-        'bldgname': building,
+        'bldgname': str(location.zone.floor.building.name),
         'location': location,
         'floor': location.zone.floor.floor,
         'sessions': sessions,
