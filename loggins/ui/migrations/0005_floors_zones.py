@@ -65,13 +65,13 @@ class Migration(DataMigration):
         zone_gelman6 = orm.Zone(floor=floor_gelman6, name='6th Floor',
                                 display_order=7)
         zone_gelman6.save()
-        zone_gelmangrc = orm.Zone(floor=floor_gelman6,
-                                  name='Global Resources Center',
-                                  display_order=8)
-        zone_gelmangrc.save()
         zone_gelman7 = orm.Zone(floor=floor_gelman7, name='7th Floor',
-                                display_order=9)
+                                display_order=8)
         zone_gelman7.save()
+        zone_gelmangrc = orm.Zone(floor=floor_gelman7,
+                                  name='Global Resources Center',
+                                  display_order=9)
+        zone_gelmangrc.save()
         zone_eckles1 = orm.Zone(floor=floor_eckles1, name='Eckles Main',
                                 display_order=0)
         zone_eckles1.save()
