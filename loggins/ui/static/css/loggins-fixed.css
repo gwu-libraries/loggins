@@ -1,10 +1,18 @@
 article {
     padding-top: 3em;
-    padding-bottom: 3em;
+    padding-bottom: 0em;
     min-height: 0;
 }
 .tight-table td, .tight-table th {
     padding: 8px 8px 8px 0;
+    font-size: 150%;
+}
+h1 {
+    font-size: 175%;
+    line-height: 175%;
+}
+h4 {
+    font-size: 120%;
 }
 @media screen and (max-width: 979px) {
      article {padding-top:.7em;}
@@ -12,8 +20,9 @@ article {
      #libheader-container {margin-bottom:0}
 }
 @media screen and (max-width: 769px) {
-   .navbar-fixed-bottom {margin-left:0px;}
+   .navbar-fixed-bottom {margin-left:0px; margin-top:0px;}
    .container {margin-left:-20px !important;}
    #libfoot-container {width:100%;}
+   #libfooter {margin: 0em;}
    .libheader-link {margin-left:2.4em;}
 }
