@@ -36,7 +36,7 @@ urlpatterns += patterns('ui.views',
     url(r'^(?P<library>(?i)(%s)?)/location/(?P<station>[0-9|a-z|A-Z]-[L|l|0-9]+)/$' % buildings_or,
         'location', name='location'),
     # example:  gelman/floor/2
-    url(r'^(?P<library>(?i)(%s)?)/floor/(?P<floor_number>[0-9])/$$' % buildings_or, 'floor', name='floor'),
+    url(r'^(?P<library>(?i)(%s)?)/floor/(?P<floor_number>[0-9])/$' % buildings_or, 'floor', name='floor'),
     # all offline carrels
     url(r'^(?i)offline/$', 'offline', {'library': 'all'}, name='offline'),
     # example:  gelman/offline
