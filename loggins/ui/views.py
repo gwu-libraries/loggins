@@ -58,7 +58,6 @@ def home(request, library, width=0):
         z['num_available_mac'] = locations_mac_available.count()
         #TODO: Remove this after eliminating dependencies
         zonelist.append(z)
-        print(z)
 
     return render(request, 'home.html', {
         'title': 'Computers Available %s - GW Libraries' % library_title,
