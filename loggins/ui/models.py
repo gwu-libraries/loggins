@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.contrib.humanize.templatetags import humanize
+#from django.contrib.humanize.templatetags import humanize
 from django.db import models
 from django.db.models.signals import pre_save
 
@@ -10,16 +10,32 @@ from tastypie.models import create_api_key
 models.signals.post_save.connect(create_api_key, sender=User)
 
 
-class Location(models.Model):
-    GELMAN = 'g'
-    ECKLES = 'e'
-    VSTC = 'v'
-    BUILDINGS = [
-        (GELMAN, 'Gelman'),
-        (ECKLES, 'Eckles'),
-        (VSTC, 'VSTC'),
-    ]
+class Building(models.Model):
+    name = models.CharField(max_length=50, db_index=True)
 
+    def __unicode__(self):
+        return '<Building %s>' % (self.name)
+
+
+class Floor(models.Model):
+    floor = models.PositiveSmallIntegerField()
+    building = models.ForeignKey(Building, related_name='buildings')
+
+    def __unicode__(self):
+        return '<Floor %d in %s>' % (self.floor, self.building.name)
+
+
+class Zone(models.Model):
+    name = models.CharField(max_length=50, db_index=True)
+    display_order = models.PositiveSmallIntegerField()
+    floor = models.ForeignKey(Floor, related_name='floors')
+
+    def __unicode__(self):
+        return '<Zone %s in %s on floor %d>' % \
+            (self.name, self.floor.building.name, self.floor.floor)
+
+
+class Location(models.Model):
     AVAILABLE = 'a'
     LOGGED_IN = 'i'
     NO_RESPONSE = 'n'
@@ -36,9 +52,7 @@ class Location(models.Model):
         (MACOSX, 'Mac OS-X'),
     ]
 
-    building = models.CharField(db_index=True, max_length=2,
-                                choices=BUILDINGS, default='')
-    floor = models.PositiveSmallIntegerField()
+    zone = models.ForeignKey(Zone, related_name='zones', null=True)
     # station name/number does not have to be unique across floors/buildings
     station_name = models.CharField(max_length=50, db_index=True)
     hostname = models.CharField(max_length=50, db_index=True)
@@ -55,9 +69,10 @@ class Location(models.Model):
                                                    auto_now_add=True)
 
     def __unicode__(self):
-        return '<Station %s %s %s>' % (self.building, self.floor,
-                                       self.station_name)
+        return '<Location %s in %s>' % (self.station_name,
+                                        self.zone.floor.building.name)
 
+    """
     def display_floor(self):
         if self.floor == 0:
             return 'Lower Level'
@@ -65,6 +80,16 @@ class Location(models.Model):
             return 'Entrance'
         else:
             return '%s' % humanize.ordinal(self.floor)
+    """
+
+    def building_name(self):
+        return self.zone.floor.building.name
+
+    def floor_number(self):
+        return self.zone.floor.floor
+
+    def zone_name(self):
+        return self.zone.name
 
 
 class Session(models.Model):
@@ -80,9 +105,17 @@ class Session(models.Model):
     session_type = models.CharField(db_index=True, max_length=2,
                                     choices=SESSION_TYPES, default='')
 
-    @property
+    #@property
     def duration(self):
         return self.timestamp_end - self.timestamp_start
+
+    def duration_minutes(self):
+        minutes = (self.timestamp_end -
+                   self.timestamp_start).total_seconds()/60
+        return round(minutes, 2)
+
+    def session_type_display(self):
+        return dict(Location.STATES)[self.session_type]
 
 
 @receiver(pre_save, sender=Location)

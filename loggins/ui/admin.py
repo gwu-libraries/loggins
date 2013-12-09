@@ -1,5 +1,4 @@
 from tastypie.admin import ApiKeyInline
-from tastypie.models import ApiAccess, ApiKey
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
@@ -14,17 +13,37 @@ admin.site.unregister(User)
 admin.site.register(User, UserModelAdmin)
 
 
+class BuildingAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name']
+admin.site.register(models.Building, BuildingAdmin)
+
+
+class FloorAdmin(admin.ModelAdmin):
+    list_display = ['id', 'floor', 'building']
+    list_filter = ['building__name']
+    ordering = ['building__name', 'floor']
+admin.site.register(models.Floor, FloorAdmin)
+
+
+class ZoneAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name', 'floor', 'display_order']
+    list_editable = ['name', 'floor', 'display_order']
+admin.site.register(models.Zone, ZoneAdmin)
+
+
 class LocationAdmin(admin.ModelAdmin):
-    list_display = ['id', 'building', 'floor', 'station_name', 'hostname',
-                    'ip_address', 'os', 'state', 'observation_time']
-    list_filter = ['building']
+    list_display = ['id', 'zone', 'station_name',
+                    'hostname', 'ip_address', 'os', 'state',
+                    'observation_time']
+    #list_filter = ['building']
+    ordering = ['id']
     search_fields = ['station_name']
 admin.site.register(models.Location, LocationAdmin)
 
 
 class DurationFilter(admin.SimpleListFilter):
-    title = 'duration'
-    parameter_name = 'duration'
+    title = 'duration_minutes'
+    parameter_name = 'duration_minutes'
 
     def lookups(self, request, model_admin):
         return [('0-5', '0-5'),

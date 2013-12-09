@@ -9,6 +9,7 @@
 <table class='table'>
     <thead>
         <tr>
+            <th>Zone</th>
             <th>Station</th>
             <th>Status</th>
             <th>Operating System</th>
@@ -17,7 +18,8 @@
     <tbody>
         {% for location in locations %}
         <tr>
-            <td>{{location.station_name}}</a></td>
+            <td>{{location.zonename}}</td>
+            <td><a href="{% url 'location' library=building station=location.station_name %}">{{location.station_name}}</a></td>
             <td>{{location.state_display}}</td>
             <td>{{location.os_display}}</td>
         </tr>
