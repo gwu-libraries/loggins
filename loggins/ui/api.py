@@ -28,12 +28,11 @@ class LocationResource(ModelResource):
             'station_name': ALL_WITH_RELATIONS,
             'ip_address': 'exact',
         }
-    """
+
     def prepend_urls(self):
         return [
             url(r"^(?P<resource_name>%s)/(?P<hostname>.+)/$" % self._meta.resource_name, self.wrap_view('dispatch_detail'), name="api_dispatch_detail"),
         ]
-    """
 
 
 class SessionResource(ModelResource):
