@@ -20,8 +20,8 @@
         {% if zone.num_total_win > 0 or zone.num_total_mac > 0 %}
         <tr>
             <td><a href="{% url 'floor' library=zone.building_display floor_number=zone.floor_number %}">{% if library_filter == "All" %}{{ zone.building_display}}, {% endif %}{{zone.zone_display }}</a></td>
-            <td>{% if zone.num_total_win > 0 %}{{zone.num_available_win}} of {{zone.num_total_win}}{% endif %}</td>
-            <td>{% if zone.num_total_mac > 0 %}{{zone.num_available_mac}} of {{zone.num_total_mac}}{% endif %}</td>
+            <td>{% if zone.num_total_win > 0 %}{{zone.num_available_win}}&nbsp;of&nbsp;{{zone.num_total_win}}{% endif %}</td>
+            <td>{% if zone.num_total_mac > 0 %}{{zone.num_available_mac}}&nbsp;of&nbsp;{{zone.num_total_mac}}{% endif %}</td>
         </tr>
         {% endif %}
         {% endfor %}
