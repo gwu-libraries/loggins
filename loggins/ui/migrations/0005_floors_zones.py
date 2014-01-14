@@ -72,13 +72,17 @@ class Migration(DataMigration):
                                   name='Global Resources Center',
                                   display_order=9)
         zone_gelmangrc.save()
-        zone_eckles1 = orm.Zone(floor=floor_eckles1, name='Eckles Main',
+        zone_gelmansc = orm.Zone(floor=floor_gelman7,
+                                 name='Special Collections',
+                                 display_order=10)
+        zone_gelmansc.save()
+        zone_eckles1 = orm.Zone(floor=floor_eckles1, name='Main',
                                 display_order=0)
         zone_eckles1.save()
-        zone_eckles2 = orm.Zone(floor=floor_eckles2, name='Eckles 2nd Floor',
+        zone_eckles2 = orm.Zone(floor=floor_eckles2, name='2nd Floor',
                                 display_order=1)
         zone_eckles2.save()
-        zone_vstc1 = orm.Zone(floor=floor_vstc1, name='VSTC Main',
+        zone_vstc1 = orm.Zone(floor=floor_vstc1, name='Main',
                               display_order=0)
         zone_vstc1.save()
 
@@ -90,6 +94,10 @@ class Migration(DataMigration):
         entrancemainzone = orm.Zone.objects.filter(
             floor__building__name='Gelman', floor__floor=2). \
             exclude(name__contains="Lab")[0]
+        grczone = orm.Zone.objects.get(floor__building__name='Gelman',
+                                       floor__floor=7, name__contains="Global")
+        sczone = orm.Zone.objects.get(floor__building__name='Gelman',
+                                      floor__floor=7, name__contains="Special")
 
         # for each location, find the (first) matching zone
         # by building and floor number.
@@ -102,6 +110,10 @@ class Migration(DataMigration):
                     zone = labzone
                 else:
                     zone = entrancemainzone
+            elif location.building == 'g' and '7-00' in location.station_name:
+                zone = grczone
+            elif location.building == 'g' and '7-01' in location.station_name:
+                zone = sczone
             # all others
             else:
                 try:
