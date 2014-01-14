@@ -4,8 +4,9 @@ article {
     min-height: 0;
 }
 .tight-table td, .tight-table th {
-    padding: 8px 8px 8px 0;
-    font-size: 150%;
+    line-height: 28px;
+    padding: 6px 8px 0 0;
+    font-size: 142%;
 }
 h1 {
     font-size: 175%;
