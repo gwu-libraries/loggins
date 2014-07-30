@@ -12,6 +12,7 @@
 </ul>
 <p>If you're looking to view which computers are offline, try:
 <ul>
+    <li><a href="{% url 'home' %}offline">{% url 'home' %}offline</a> (for offline computers everywhere)
     <li><a href="{% url 'home' %}gelman/offline">{% url 'home' %}gelman/offline</a>
     <li><a href="{% url 'home' %}eckles/offline">{% url 'home' %}eckles/offline</a>
     <li><a href="{% url 'home' %}vstc/offline">{% url 'home' %}vstc/offline</a>
@@ -22,7 +23,7 @@
 </ul>
 <p>If you're trying to view statistics on a particular location, try:
 <ul>
-    <li>{% url 'home' %}/gelman/location/3-101 (to view location 3-101 in Gelman)
+    <li>{% url 'home' %}gelman/location/3-101 (to view location 3-101 in Gelman)
 </ul>
 <p>If you're looking to view a particular library's computers using a fixed-width display, try:
 <ul>
