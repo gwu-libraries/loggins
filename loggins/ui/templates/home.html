@@ -3,25 +3,31 @@
 {% load humanize %}
 
 {% block content %}
-<div class='span12' style="{% if fixedwidth and fixedwidth != 0 %}width:{{fixedwidth|add:"-10"}}px;margin-left:10px{% endif %}">
+<div class='span12' style="{% if fixedwidth and fixedwidth != 0 %}width:{{fixedwidth|add:"-10"}}px;margin-left:5px{% endif %}">
+{% if fixedwidth == 0 %}
     <h1>{% if library_filter == "All" %}
         Library {% else %} {{library_filter|capfirst}} Library {% endif %} workstations available</h1>
+{% endif %}
 {% if zones %}
 <table class='table tight-table' style="{% if fixedwidth and fixedwidth != 0 %}width:{{fixedwidth|add:"-10"}}px{% endif %}">
     <thead>
         <tr>
             <th>Floor</th>
-            <th>Windows</th>
-            <th>Mac</th>
+            <th style="text-align: center">Windows</th>
+            <th style="text-align: center">Mac</th>
         </tr>
     </thead>
     <tbody>
         {% for zone in zones %}
         {% if zone.num_total_win > 0 or zone.num_total_mac > 0 %}
         <tr>
-            <td><a href="{% url 'floor' library=zone.building_display floor_number=zone.floor_number %}">{% if library_filter == "All" %}{{ zone.building_display}}, {% endif %}{{zone.zone_display }}</a></td>
-            <td>{% if zone.num_total_win > 0 %}{{zone.num_available_win}}&nbsp;of&nbsp;{{zone.num_total_win}}{% endif %}</td>
-            <td>{% if zone.num_total_mac > 0 %}{{zone.num_available_mac}}&nbsp;of&nbsp;{{zone.num_total_mac}}{% endif %}</td>
+            {% if fixedwidth == 0 %}
+            <td class='header-column'><a href="{% url 'floor' library=zone.building_display floor_number=zone.floor_number %}">{% if library_filter == "All" %}{{ zone.building_display}}, {% endif %}{{zone.zone_display }}</a></td>
+            {% else %}
+            <td class='header-column'>{% if library_filter == "All" %}{{ zone.building_display}}, {% endif %}{{zone.zone_display }}</td>
+            {% endif %}
+            <td class='value-column' style="text-align: center">{% if zone.num_total_win > 0 %}{{zone.num_available_win}}&nbsp;of&nbsp;{{zone.num_total_win}}{% endif %}</td>
+            <td class='value-column' style="text-align: center">{% if zone.num_total_mac > 0 %}{{zone.num_available_mac}}&nbsp;of&nbsp;{{zone.num_total_mac}}{% endif %}</td>
         </tr>
         {% endif %}
         {% endfor %}
@@ -53,11 +59,9 @@
 {% if library_filter != "Eckles" %}<a href="{% url 'home' library='eckles'%}">Eckles</a> {% if library_filter != "VSTC" %} / {% endif %}{% endif %}
 {% if library_filter != "VSTC" %}<a href="{% url 'home' library='vstc'%}">VSTC</a>{% endif %}
 </h4>
-{% endif %}
 <h4>
 Last updated on {% now "DATETIME_FORMAT"%}
 </h4>
-{% if fixedwidth == 0 %}
 <h4>
 <a href="http://library.gwu.edu/services/computers-wireless/library-computers">About GW Libraries Computers</a>
 </div>

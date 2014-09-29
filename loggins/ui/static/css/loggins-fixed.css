@@ -2,11 +2,18 @@ article {
     padding-top: 3em;
     padding-bottom: 0em;
     min-height: 0;
+    background-color: #d9e1e2;
 }
 .tight-table td, .tight-table th {
     line-height: 28px;
     padding: 6px 8px 0 0;
     font-size: 142%;
+}
+.value-column {
+    color: #004065;
+}
+.header-column {
+    color: #0096d6;
 }
 h1 {
     font-size: 175%;
