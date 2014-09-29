@@ -48,18 +48,17 @@ ga('send', 'pageview');
         {% endblock analytics_bug %}
     </head>
     <body>
+        {% if not fixedwidth or fixedwidth == 0 %}
         <!-- this is the Libsite7 Lite Header -->
         <header class="navbar-fixed-top">
-            <div id="libheader-container" style="{% if fixedwidth and fixedwidth != 0 %}width:{{fixedwidth}}px{% endif %}">
+            <div id="libheader-container">
                 <div id="libheader" class="container" style="">
                     <div class="libheader-logo hide-lo" style="">
                         <a href="http://www.gwu.edu" target="_blank" title="GWU website"><img src="{{ STATIC_URL }}img/gwheaderlogo.png" alt="logo: The George Washington University" /></a>
                     </div>
-                    {% if not fixedwidth or fixedwidth == 0 %}
                     <div class="libheader-liblink" style="">
                         <a href="http://library.gwu.edu" target="_blank" title="GW Libraries website">GW Libraries</a>
                     </div>
-                    {% endif %}
                     <div class="libheader-link" style="">
                         <a href="{% url 'home' %}" title="computers.library.gwu.edu home">computers.library.gwu.edu</a>
                     </div>
@@ -71,6 +70,7 @@ ga('send', 'pageview');
             </div>
         </header>
         <!-- end Libsite7 Lite Header -->
+        {% endif %}
 
         <article class='container' style="{% if fixedwidth and fixedwidth != 0 %}width:{{fixedwidth}}px;margin-left:0{% endif %}">
             <div class="row-fluid">
@@ -80,10 +80,11 @@ ga('send', 'pageview');
         </article>
 
         <!-- the Libsite7 Lite Footer -->
-        <footer class="navbar-fixed-bottom" style="{% if fixedwidth and fixedwidth != 0 %}position:absolute;bottom:0;width:{{fixedwidth}}px;padding-right:0{% endif %}">
+        {% if fixedwidth == 0 %}
+        <footer class="navbar-fixed-bottom">
             <div id="libfooter-container" style="width:100%">
                 <div id="libfooter" class="container" style="width:100%">
-                    <div class="libfooter-text" style="{% if fixedwidth and fixedwidth and fixedwidth != 0 %}display:none{% endif %}">
+                    <div class="libfooter-text">
                         <span class="address">
                             <a href="http://library.gwu.edu" target="_blank" title="GW Libraries Website">GW Libraries</a> 
                             &#8226; 2130 H Street NW &#8226; Washington DC 20052
@@ -96,6 +97,7 @@ ga('send', 'pageview');
                 </div>
             </div>
         </footer>
+        {% endif %}
         <!-- end Libsite7 Lite Footer -->
 
     </body>
