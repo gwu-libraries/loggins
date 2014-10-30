@@ -42,9 +42,13 @@
                   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
                   ga('create', '{{ google_analytics_ua }}', 'gwu.edu');
-                  ga('create', 'UA-45635686-1', 'auto', {'name': 'aggregate'});  // sets aggregated Analytics account.
+                  {% if google_analytics_aggregate_ua %}
+                  ga('create', '{{ google_analytics_aggregate_ua }}', 'auto', {'name': 'aggregate'});  // sets aggregated Analytics account.
+                  {% endif %}
                   ga('send', 'pageview');
+                  {% if google_analytics_aggregate_ua %}
                   ga('aggregate.send', 'pageview'); // Send page view for aggregated Analytics account.
+                  {% endif %}
                 </script>
             {% endif %}
         {% endblock analytics_bug %}
