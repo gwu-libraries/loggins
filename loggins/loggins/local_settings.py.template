@@ -28,3 +28,5 @@ TASTYPIE_DEFAULT_FORMATS = ['json']
 
 # If this value is present (not empty), GA bug will be added to html
 GOOGLE_ANALYTICS_UA = ''
+# If this value is present (not empty), GA bug will be appended with the 'aggregate' account tracking
+GOOGLE_ANALYTICS_AGGREGATE_UA = ''
