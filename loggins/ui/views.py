@@ -108,7 +108,7 @@ def floor(request, library, floor_number):
         loclist.append(l)
 
     return render(request, 'floor.html', {
-        'title': 'Computers Offline - GW Libraries',
+        'title': 'Computers in ' + building + ', floor ' + floor_number,
         'locations': loclist,
         'building': building,
         'bldgfloorcode': 'g2',
